@@ -4,6 +4,7 @@ class MySnackbar{
 
   static void show(BuildContext context, String text){
 
+    // ignore: unnecessary_null_comparison
     if (context == null) return;
 
     FocusScope.of(context).requestFocus(new FocusNode());

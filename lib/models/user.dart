@@ -6,40 +6,47 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-    
+    int? id;
     String? nombre;
     String? telefono;
     String? ci;
     String? email;
     String? direccion;
     String? password;
+    String? token;
 
     User({
+      
       this.nombre,
       this.telefono,
       this.ci,
       this.email,
       this.direccion,
-      this.password, 
+      this.password,  
+      this.id, 
+      this.token
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
         nombre: json["nombre"],
         telefono: json["telefono"],
         ci: json["ci"],
         email: json["email"],
         direccion: json["direccion"],
         password: json["password"],
+        token: json["tokenMovil"]
     );
 
     Map<String, dynamic> toJson() => {
-        //"id": id,
+//        "id": id,
         "nombre": nombre,
         "telefono": telefono,
         "ci": ci,
         "email": email,
         "direccion": direccion,
         "password": password,
+        //"tokenMovil": token
     };
 }
 

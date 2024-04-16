@@ -1,12 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pasanaku/views/home/presentation/controllers/home_controller.dart';
+import 'package:pasanaku/views/shared/widgets/custom_filled_button.dart';
 
-class HomeScreen extends StatelessWidget {
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  
+  HomeController con = HomeController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      con.init(context, refresh);
+    });
+  }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(      
+    
+    final textStyles = Theme.of(context).textTheme;
+    return Scaffold(  
+      key: con.key,
+      drawer: _drawer(textStyles, con),    
       
       appBar: AppBar(
         title: const Text('Bienvenido'),
@@ -19,7 +43,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body:const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -93,5 +117,63 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+
+Widget _drawer(TextTheme styles, HomeController con){
+
+  return Drawer(
+
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        DrawerHeader(
+          decoration: BoxDecoration(
+            color: Color(0xFFFDE047),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                con.user?.email??'',
+                style: styles.titleMedium,
+                maxLines: 1,
+              ),
+              SizedBox(height: 10,),
+              Text(
+                'Correo',
+                style: styles.titleSmall,
+                maxLines: 1,
+              ),
+              
+              
+            ],
+          )
+        ),
+        SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: CustomFilledButton(
+              text: 'Cerrar sesion',
+              buttonColor: Color(0xff4339B0),
+              onPressed: (){
+                con.logout();
+              },
+            )
+          )
+        
+        
+        
+      ],
+    ),
+  );
+
+  
 }
 
+void refresh(){
+  setState(() {
+    
+  });
+}
+
+}

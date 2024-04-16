@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pasanaku/models/response_api.dart';
 import 'package:pasanaku/models/user.dart';
 import 'package:pasanaku/providers/user_provider.dart';
 import 'package:pasanaku/views/shared/widgets/my_snackbar.dart';
+import 'package:pasanaku/views/shared/widgets/shared_pref.dart';
 
 class RegisterController{
 
@@ -15,8 +17,10 @@ class RegisterController{
   TextEditingController passwordController= TextEditingController();
   TextEditingController direccionController= TextEditingController();
 
-  UserProvider userProvider = new UserProvider();
+  UserProvider userProvider = UserProvider();
+  SharedPref _sharedPref = SharedPref(); 
 
+  // ignore: body_might_complete_normally_nullable
   Future? init(BuildContext context){
     this.context = context;
     userProvider.init(context);
@@ -39,8 +43,7 @@ class RegisterController{
 
 
 
-    User user = User(
-      
+    User user = User( 
       email: email,
       nombre: name,
       direccion: direccion,
@@ -49,9 +52,16 @@ class RegisterController{
       ci: ci
     );
 
+
     ResponseApi? responseApi = await userProvider.create(user);
     //MySnackbar.show(context!, responseApi!.message);
     print('Respuesta: ${responseApi?.toJson()}');
+    if (responseApi?.error == null){
+      User user = User.fromJson(responseApi?.data);
+      _sharedPref.save('user', user.toJson());
+      // ignore: use_build_context_synchronously
+      context?.go('/home');
+    }
 
     //print('$email, $name, $phone, $lastName, $password, $confirmedPassword');
   }

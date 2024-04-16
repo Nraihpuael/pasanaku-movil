@@ -134,7 +134,8 @@ class _LoginFormState extends State<_LoginForm> {
               buttonColor: Color(0xFFFDE047),
               onPressed: (){
                 
-                _con.login();
+                _con.login(context);
+                //context.go('/home');
                 //Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
               },
             )
