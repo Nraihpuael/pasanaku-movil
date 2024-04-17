@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pasanaku/views/home/presentation/screens/home_screen.dart';
 import 'package:pasanaku/views/shared/shared.dart';
 
 import '../controllers/login_controller.dart';

@@ -48,6 +48,17 @@ class User {
         "password": password,
         //"tokenMovil": token
     };
+
+    Map<String, dynamic> toJsonReg() => {
+        "id": id,
+        "nombre": nombre,
+        "telefono": telefono,
+        "ci": ci,
+        "email": email,
+        "direccion": direccion,
+        "password": password,
+        "tokenMovil": token
+    };
 }
 
 

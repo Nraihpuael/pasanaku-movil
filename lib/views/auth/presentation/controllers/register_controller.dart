@@ -58,7 +58,7 @@ class RegisterController{
     print('Respuesta: ${responseApi?.toJson()}');
     if (responseApi?.error == null){
       User user = User.fromJson(responseApi?.data);
-      _sharedPref.save('user', user.toJson());
+      _sharedPref.save('user', user.toJsonReg());
       // ignore: use_build_context_synchronously
       context?.go('/home');
     }

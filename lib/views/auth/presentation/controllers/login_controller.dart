@@ -43,8 +43,8 @@ class LoginController{
     MySnackbar.show(context!, responseApi.toString());
     print('email: $email, password: $password');
     if (responseApi?.data != null){
-      User user = User.fromJson(responseApi?.data);
-      _sharedPref.save('user', user.toJson());
+      User user = User.fromJson(responseApi!.data);
+      _sharedPref.save('user', user.toJsonReg());
       // ignore: use_build_context_synchronously
       con.go('/home');
     } else {

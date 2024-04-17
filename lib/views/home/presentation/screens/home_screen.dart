@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pasanaku/models/invitacion.dart';
 import 'package:pasanaku/views/home/presentation/controllers/home_controller.dart';
 import 'package:pasanaku/views/shared/widgets/custom_filled_button.dart';
 
@@ -15,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   
   HomeController con = HomeController();
+
+  
 
   @override
   void initState() {
@@ -50,8 +53,17 @@ class _HomeScreenState extends State<HomeScreen> {
             Card(
               child: Column(
                 children: [
-                  
-                  ListTile(
+                  ListView.builder(
+                    itemCount: con.invitaciones.length,
+                    itemBuilder: (context, index){
+                      List<Invitacion> lista = con.invitaciones;
+                      Invitacion invitacion = lista[0];
+                      return Text(          
+                        invitacion.nombre.toString()                        
+                      );
+                    },
+                  ),
+                  /*ListTile(
                     leading: Icon(Icons.play_circle_filled),
                     title: Text('Familia'),
                     subtitle: Text('En Juego'),
@@ -74,8 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     leading: Icon(Icons.play_circle_filled),
                     title: Text('Familia Arauz'),
                     subtitle: Text('En Juego'),
-                  ),
+                  ),*/
                 ],
+
               ),
               
             ),
