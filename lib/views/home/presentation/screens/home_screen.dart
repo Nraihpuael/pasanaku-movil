@@ -52,20 +52,29 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             Expanded(
               child: SizedBox(
                 height: 200,
                 child: 
-                 
-              
                 ListView.builder(
                         itemCount: con.invitaciones.length,
                         itemBuilder: (BuildContext context, index){
                           Invitacion invitacion = con.invitaciones[index];
-                          return Text(          
-                            invitacion.partidaNombre.toString(),                        
-                          );
+                          return ListTile(
+                          onTap: (){
+                            print("gollllllllllllllll");
+                            context.push('/invitaciones-pendientes');
+                          },
+                          focusColor: Colors.blueAccent,
+                            dense: true,
+                            leading: Icon(Icons.play_circle_filled),
+                            title: Text(
+                              con.invitaciones[index].partidaNombre.toString().toUpperCase(),
+                              style: textStyles.titleSmall,
+                            ),
+                            subtitle: Text('En Juego'),
+                    
+                  );
                         },
                 ),
               ),

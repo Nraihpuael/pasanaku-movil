@@ -31,6 +31,11 @@ class InvitacionesPendientesController{
     refresh!();
   }
 
+  void aceptarInvitacion(int? id) async{
+    _invitacionProvider.aceptarInvitacion(id!);
+    refresh!();
+  }
+
   void logout(){
     _sharedPref.logout(context!);
   }

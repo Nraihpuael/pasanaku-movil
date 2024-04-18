@@ -16,7 +16,8 @@ class InvitacionesPendientesScreen extends StatefulWidget {
 class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScreen> {
   
   InvitacionesPendientesController _con = InvitacionesPendientesController();
-  
+  bool invitacionAceptada = false;
+  bool invitacionRechazada = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -28,6 +29,8 @@ class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScr
 
   @override
   Widget build(BuildContext context) {
+
+
     print('invitaciones dentro de invtaciones pend ${_con.invitaciones.length}');
     final textStyles = Theme.of(context).textTheme;
     return Scaffold(
@@ -114,7 +117,11 @@ class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScr
                           FloatingActionButton(
                             child: Text('Aceptar'),
                             onPressed: () {
+                              _con.aceptarInvitacion(_con.invitaciones[index].id);
                               Navigator.of(context).pop();
+                              setState(() {
+                                invitacionAceptada = true;                                
+                              });
                             },
                           ),
                           FloatingActionButton(
