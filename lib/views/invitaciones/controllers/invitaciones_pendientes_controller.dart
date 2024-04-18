@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pasanaku/models/invitacion.dart';
-import 'package:pasanaku/models/models.dart';
-import 'package:pasanaku/providers/invitacion_provider.dart';
-import 'package:pasanaku/views/shared/widgets/shared_pref.dart';
+import 'package:pasanaku/models/user.dart';
 
-class HomeController{
+import '../../../providers/invitacion_provider.dart';
+import '../../shared/widgets/shared_pref.dart';
+
+class InvitacionesPendientesController{
+
   BuildContext? context;
   
   SharedPref _sharedPref = SharedPref();
@@ -13,17 +14,16 @@ class HomeController{
   Function? refresh;
   User? user;
   InvitacionProvider _invitacionProvider = InvitacionProvider();
-  
   List<Invitacion> invitaciones = [];
+
   Future? init(BuildContext context, Function refresh) async{
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
     getInvitaciones(user!.id);
-    refresh();   
+    refresh();
   }
 
-  
   void getInvitaciones(int? id) async{
     print("id de invitado: $id");
     invitaciones = (await _invitacionProvider.invitaciones(id))!;
@@ -42,7 +42,6 @@ class HomeController{
   void openDrawer(){
     key.currentState!.openDrawer();
   }
-
   
 
 }

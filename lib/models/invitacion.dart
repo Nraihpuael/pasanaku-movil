@@ -41,7 +41,7 @@ class Invitacion {
     );
 
     Invitacion.fromJsonList(List<dynamic> jsonList){
-      if (jsonList != null) return;
+      if (jsonList == null) return;
         jsonList.forEach((item) {
           Invitacion invitacion = Invitacion.fromJson(item);
           toList.add(invitacion);

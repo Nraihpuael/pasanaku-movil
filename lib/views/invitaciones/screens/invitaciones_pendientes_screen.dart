@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:pasanaku/providers/invitacion_provider.dart';
 
 
-class InvitacionesPendientesScreen extends StatelessWidget {
+class InvitacionesPendientesScreen extends StatefulWidget {
 
    static const List<String> invitaciones = [
     
@@ -14,9 +15,20 @@ class InvitacionesPendientesScreen extends StatelessWidget {
     'Trabajo',
   ];
 
+  
+  
+  
+  
   const InvitacionesPendientesScreen({super.key});
 
+  @override
+  State<InvitacionesPendientesScreen> createState() => _InvitacionesPendientesScreenState();
+}
 
+class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScreen> {
+  
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +37,10 @@ class InvitacionesPendientesScreen extends StatelessWidget {
         title: Text('Invitaciones Pendientes'),
       ),
       body: ListView.builder(
-        itemCount: invitaciones.length ,
+        itemCount: InvitacionesPendientesScreen.invitaciones.length ,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(invitaciones[index]),
+            title: Text(InvitacionesPendientesScreen.invitaciones[index]),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -79,12 +91,12 @@ class InvitacionesPendientesScreen extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Pasanaku ${invitaciones[index]}'),
+                        title: Text('Pasanaku ${InvitacionesPendientesScreen.invitaciones[index]}'),
                         content: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [                      
-                            Text('Usted a sido invitado a participar en el juego: ${invitaciones[index]}'),
+                            Text('Usted a sido invitado a participar en el juego: ${InvitacionesPendientesScreen.invitaciones[index]}'),
                             Text('Con un monto de: 1000 Bs.'),
                             Text('pago por ronda: 100 Bs.'),
                             Text('Numero de Rondas: 10'),
