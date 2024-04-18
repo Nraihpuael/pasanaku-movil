@@ -1,23 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:pasanaku/providers/invitacion_provider.dart';
+import 'package:pasanaku/views/invitaciones/controllers/invitaciones_pendientes_controller.dart';
 
 
 class InvitacionesPendientesScreen extends StatefulWidget {
-
-   static const List<String> invitaciones = [
-    
-    
-    'Familia',
-    'Amigos',
-    'Tios',
-    'Colegio',
-    'Trabajo',
-  ];
-
-  
-  
-  
   
   const InvitacionesPendientesScreen({super.key});
 
@@ -27,20 +15,39 @@ class InvitacionesPendientesScreen extends StatefulWidget {
 
 class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScreen> {
   
-
+  InvitacionesPendientesController _con = InvitacionesPendientesController();
   
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('invitaciones dentro de invtaciones pend ${_con.invitaciones.length}');
+    final textStyles = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
       
         title: Text('Invitaciones Pendientes'),
       ),
       body: ListView.builder(
-        itemCount: InvitacionesPendientesScreen.invitaciones.length ,
+        itemCount: _con.invitaciones.length ,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(InvitacionesPendientesScreen.invitaciones[index]),
+          return ListTile(            
+            title: Text(_con.invitaciones[index].partidaNombre.toString().toUpperCase()),
+            subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Monto: ${_con.invitaciones[index].partidaPozo.toString()}"),
+                Text("Fecha Incio: ${_con.invitaciones[index].partidaFecha.toString()}")
+              ],
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -91,16 +98,16 @@ class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScr
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Pasanaku ${InvitacionesPendientesScreen.invitaciones[index]}'),
+                        title: Text('Pasanaku ${_con.invitaciones[index].partidaNombre.toString().toUpperCase()}'),
                         content: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [                      
-                            Text('Usted a sido invitado a participar en el juego: ${InvitacionesPendientesScreen.invitaciones[index]}'),
-                            Text('Con un monto de: 1000 Bs.'),
+                            Text('Usted a sido invitado a participar en el juego: ${_con.invitaciones[index].partidaNombre.toString().toUpperCase()}'),
+                            Text('Con un monto de: ${_con.invitaciones[index].partidaPozo}'),
                             Text('pago por ronda: 100 Bs.'),
                             Text('Numero de Rondas: 10'),
-                            Text('Fecha de inicio: 10/05/2024'),
+                            Text('Fecha de inicio: ${DateTime.parse(_con.invitaciones[index].partidaFecha.toString())}'),
                           ],
                         ),
                         actions: [
@@ -122,4 +129,10 @@ class _InvitacionesPendientesScreenState extends State<InvitacionesPendientesScr
                     },
                   );
   }
+  void refresh(){
+  setState(() {
+    
+  });
+}
+
 }

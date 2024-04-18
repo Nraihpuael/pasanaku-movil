@@ -100,6 +100,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   Widget build(BuildContext context) {
 
     final textStyles = Theme.of(context).textTheme;
+    
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),

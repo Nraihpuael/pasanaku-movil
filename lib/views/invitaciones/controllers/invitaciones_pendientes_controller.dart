@@ -21,13 +21,14 @@ class InvitacionesPendientesController{
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
     getInvitaciones(user!.id);
-    refresh();
+    
   }
 
   void getInvitaciones(int? id) async{
     print("id de invitado: $id");
     invitaciones = (await _invitacionProvider.invitaciones(id))!;
     print(invitaciones);
+    refresh!();
   }
 
   void logout(){

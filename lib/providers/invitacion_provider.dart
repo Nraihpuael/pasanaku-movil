@@ -16,6 +16,8 @@ class InvitacionProvider{
       final res = await http.get(url);
       final data = json.decode(res.body);
       Invitacion invitacion = Invitacion.fromJsonList(data);
+      //print("imprimiendo invitacion");
+      //print("${invitacion.id}, ${invitacion.jugadorNombre}, ${invitacion.partidaFecha}");
       return invitacion.toList;
     } catch (e) {
       print("error $e");
