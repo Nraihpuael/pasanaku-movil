@@ -83,7 +83,7 @@ class _ShowJuegoScreenState extends State<ShowJuegoScreen> {
                   Navigator.push(
                   context,
                   MaterialPageRoute(
-                  builder: (context) => ShowRondaScreen(partida: _con.partida!.rondasEnpartida),
+                  builder: (context) => ShowRondaScreen(partida: _con.partida),
                 ),
               );
                   //context.go('/home');

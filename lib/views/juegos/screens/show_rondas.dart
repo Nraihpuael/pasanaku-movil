@@ -4,7 +4,8 @@ import 'package:pasanaku/models/partida.dart';
 
 
 class ShowRondaScreen extends StatefulWidget {
-  const ShowRondaScreen({super.key, List<RondasEnpartida>? partida});
+  final Partida? partida;
+  const ShowRondaScreen({super.key, this.partida});
 
   @override
   State<ShowRondaScreen> createState() => _ShowRondaScreenState();
@@ -13,7 +14,30 @@ class ShowRondaScreen extends StatefulWidget {
 class _ShowRondaScreenState extends State<ShowRondaScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Rondas de la partida'),
+      ),
+      body: ListView.builder(
+                  itemCount: widget.partida!.rondasEnpartida!.length,
+                  itemBuilder: (contex, index){
+                    
+                    return GestureDetector(
+                      child: ListTile(
+                        title: Text(widget.partida!.rondasEnpartida![index].nombre.toString()),
+                        subtitle: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.partida!.rondasEnpartida![index].estado),
+                            Text(widget.partida!.rondasEnpartida![index].fechaInicio.toIso8601String())
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                ),
+    );
   }
 }
 
