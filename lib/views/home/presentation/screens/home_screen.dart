@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (value) {
           switch (value) {
             case 0:
-              context.push('/invitaciones-pendientes');
+              context.push('/juegos');
               break;
             case 1:
               context.push('/home');
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
           
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Notificaciones',
+            label: 'Mis Partidas',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

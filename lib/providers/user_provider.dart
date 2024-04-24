@@ -57,10 +57,6 @@ class UserProvider {
 
       final res = await http.post(uri, headers: headers, body: bodyParams);
 
-      print('Response status: ${res.statusCode}');
-      print('Response body: ${res.body}');
-      print('envio');
-
       final data = jsonDecode(res.body);
 
       ResponseApi responseApi = ResponseApi.fromJson(data);

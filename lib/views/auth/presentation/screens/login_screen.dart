@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //print('init construido');
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       //print('scheduler binding');
-      _con.init(context);
+      _con.init(context, refresh);
     });
   }
 
@@ -61,6 +61,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ])),
     );
   }
+
+  refresh() {
+    setState(() {      
+    });
+  }
 }
 
 class _LoginForm extends StatefulWidget {
@@ -79,7 +84,7 @@ class _LoginFormState extends State<_LoginForm> {
     //print('init construido');
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       //print('scheduler binding');
-      _con.init(context);
+      _con.init(context, refresh);
     });
   }
 
@@ -109,7 +114,7 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 30),
           SizedBox(
-              width: 60,
+              width: double.infinity,
               height: 60,
               child: CustomFilledButton(
                 text: 'Ingresar',
@@ -138,4 +143,11 @@ class _LoginFormState extends State<_LoginForm> {
       ),
     );
   }
+  
+  void refresh(){
+  setState(() {
+    
+  });
+
+}
 }

@@ -35,13 +35,16 @@ class InvitacionesPendientesController{
     _invitacionProvider.aceptarInvitacion(id!);
     refresh!();
   }
-
+  void rechazarInvitacion(int? id) async{
+    _invitacionProvider.rechazarInvitacion(id!);
+    refresh!();
+  }
   void logout(){
     _sharedPref.logout(context!);
   }
 
-  Future<List<Invitacion>?> obtenrInvitaciones() async{
-    return await _invitacionProvider.invitaciones(43);
+  Future<List<Invitacion>?> obtenrInvitaciones(int id) async{
+    return await _invitacionProvider.invitaciones(id);
   }
 
 

@@ -39,4 +39,16 @@ class InvitacionProvider{
     }
 
   }
+  Future<void> rechazarInvitacion(int idInvitacion) async{
+    try {
+      Uri url = Uri.http(_url, '$_api/rechazar/$idInvitacion');
+      final res = await http.put(url);
+      final data = json.decode(res.body);
+      return data;
+    } catch (e) {
+      print("error $e");
+      return;
+    }
+
+  }
 }
