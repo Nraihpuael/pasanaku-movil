@@ -24,6 +24,8 @@ class _ShowJuegoScreenState extends State<ShowJuegoScreen> {
       _con.init(context, refresh);
     });
   }
+
+  //vvbvb
   @override
   Widget build(BuildContext context) {
     Partida partida = _con.getJueg(2) as Partida;
