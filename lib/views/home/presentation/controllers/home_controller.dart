@@ -16,6 +16,7 @@ class HomeController{
   
   List<Invitacion> invitaciones = [];
   Future? init(BuildContext context, Function refresh) async{
+    
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
