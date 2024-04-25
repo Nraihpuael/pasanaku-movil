@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pasanaku/models/partida.dart';
+import 'package:pasanaku/views/juegos/screens/show_apuesta_screen.dart';
+import 'package:pasanaku/views/shared/widgets/custom_filled_button.dart';
 
 import '../../../models/user.dart';
 import '../controllers/rondas_controller.dart';
@@ -63,50 +65,63 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
               ),
               ListTile(
                 title: Text('Fecha de inicio'),
-                subtitle: Text(_con.subasta!.fechaInicio.hour.toString()??""),
-              ),/*
-              ListTile(
-                title: Text('Cuota inicial'),
-                subtitle: Text(_con.partida!.coutaInicial.toString()??""),
+                subtitle: Text(_con.subasta!.fechaInicio!.toIso8601String()),
               ),
               ListTile(
-                title: Text('Lapso'),
-                subtitle: Text(_con.partida!.lapso.toString()??""),
+                title: Text('Fechca de incio'),
+                subtitle: Text(_con.subasta!.fechaFinal!.toIso8601String()),
               ),
+
+
               ListTile(
-                title: Text('Moneda'),
-                subtitle: Text(_con.partida!.moneda.toString()??""),
+                title: Text('Estado'),
+                subtitle: Text(_con.subasta!.estado.toString()),
               ),
+              if (_con.subasta?.ganador != null)
+                ListTile(
+                  title: Text('Ganador'),
+                  subtitle: Text(_con.subasta!.ganador.toString()),
+                )                        
+              else
+                ListTile(
+                title: Text('Ganador'),
+                subtitle: Text("aun no hay ganador"),
+                ),  
+              if (_con.subasta?.resultado != null)
+                ListTile(
+                  title: Text('Ganador'),
+                  subtitle: Text(_con.subasta!.resultado.toString()),
+                )                        
+              else
+                ListTile(
+                title: Text('Monto'),
+                subtitle: Text("No hay un monto asignado el ganador"),
+                ), 
+              
+
+
+              /*_con.subasta!.ganador.toString() != null ?
               ListTile(
-                title: Text('Participantes'),
-                subtitle: Text(_con.partida!.participantes.toString()??""),
-              ),
-              ListTile(
-                title: Text('Pozo'),
-                subtitle: Text(_con.partida!.pozo.toString()??""),
-              ),
-              ListTile(
-                title: Text('Número de rondas'),
-                subtitle:
-                    Text(_con.partida!.rondasEnpartida!.length.toString()??""),
-              ),
+                title: Text('Ganador'),
+                subtitle: Text(_con.subasta!.ganador.toString()),
+              ): Text("Aun no se encuentra ganador"),*/
               SizedBox(
               width: double.infinity,
               height: 60,
               child: CustomFilledButton(
-                text: 'Ver Rondas',
+                text: 'Pujar',
                 buttonColor: Color(0xFFFDE047),
                 onPressed: () {
                   Navigator.push(
                   context,
                   MaterialPageRoute(
-                  builder: (context) => ShowRondaScreen(partida: _con.partida, user: _con.user, rondaPartida: _con.partida!.rondasEnpartida,),
+                  builder: (context) => ShowApuestaScreen(partida: widget.partida, user: widget.user, rondaPartida: widget.rondaPartida,),
                 ),
               );
                   //context.go('/home');
                   //Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
                 },
-              )),*/
+              )),
               
             ],
           ),

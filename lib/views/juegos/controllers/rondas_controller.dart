@@ -25,12 +25,13 @@ class RondaController{
     this.context = context;
     this.refresh = refresh; 
     this.estado = true;
-    getRonda(idSubasta);
+    getRondas(idSubasta);
     
   }
 
-  void getRonda(int? id) async{
+  void getRondas(int? id) async{
     print("id de la subasta");
+    print(id);
     subasta = (await _partidaProvider.subasta(id));
     print("subasta desde el controlador");
     print(subasta);
