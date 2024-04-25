@@ -1,5 +1,7 @@
 
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:pasanaku/models/partida.dart';
 import 'package:pasanaku/providers/juego_provider.dart';
@@ -18,26 +20,38 @@ class ShowJuegoController{
   User? user;
   PartidaProvider _partidaProvider = PartidaProvider();
   List<Juego> jugadores = [];
-  //Partida? partida;
+  Partida? partida;
+  bool? estado;
 
 
-  Future? init(BuildContext context, Function refresh) async{
+  Future? init(BuildContext context, Function refresh, int idPartida) async{
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
-    //getJuegos(user!.id);
+    this.estado = true;
+    getPartida(idPartida);
+    
     
   }
-/*
-  void getJuegos(int? id) async{
-    print("id de invitado: $id");
-    partida = (await _partidaProvider.partidas(id))! as Partida?;
-    print(partida);
-    refresh!();
-  } */
 
-  Future<Partida?> getJueg(int? id) async {
-    return await _partidaProvider.partidas(id);
-  }
+  void getPartida(int? id) async{
+    
+    print("id de invitado: $id");
+    partida = (await _partidaProvider.partidas(id));
+    print('psrtida controller');
+    print(partida);
+    //if (estado == true){
+      refresh!();
+      //estado = false;
+    //}
+    //
+  } 
+
+  /*Future<Partida?> getJueg(int? id) async {
+    Partida? part = await _partidaProvider.partidas(id);
+    print('partida controlador');
+    print(part?.nombre);
+    return part;
+  }*/
 
 }

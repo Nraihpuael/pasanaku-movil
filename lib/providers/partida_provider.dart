@@ -20,14 +20,14 @@ class PartidaProvider{
       final res = await http.get(url);
       print(res.body);
       final data = json.decode(res.body);
-      print("pasooo pero la dats esra haci");
       print(data);
-      Partida partida = Partida.fromJson(data['data']);
-      print(partida.id);
+      Partida partida = Partida.fromJson(data);
+      print('partida provider');
+      print(partida);
       //print("${invitacion.id}, ${invitacion.jugadorNombre}, ${invitacion.partidaFecha}");
       return partida;
     } catch (e) {
-      print("error $e");
+      print("errorrr $e");
       return null;
     }
     
