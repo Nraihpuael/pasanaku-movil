@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:pasanaku/models/partida.dart';
+import 'package:pasanaku/models/subasta.dart';
 import 'package:pasanaku/providers/juego_provider.dart';
 
 import '../../../models/juego.dart';
@@ -21,6 +22,8 @@ class ShowJuegoController{
   PartidaProvider _partidaProvider = PartidaProvider();
   List<Juego> jugadores = [];
   Partida? partida;
+  Subasta? subasta;
+  
   bool? estado;
 
 
@@ -46,6 +49,17 @@ class ShowJuegoController{
     //}
     //
   } 
+
+
+  void getRonda(int? id) async{
+    print("id de la subasta");
+    subasta = (await _partidaProvider.subasta(id));
+    print("subasta desde el controlador");
+    print(subasta);
+
+
+  
+  }
 
   /*Future<Partida?> getJueg(int? id) async {
     Partida? part = await _partidaProvider.partidas(id);

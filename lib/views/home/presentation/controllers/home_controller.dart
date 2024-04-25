@@ -26,10 +26,10 @@ class HomeController{
 
   
   void getInvitaciones(int? id) async{
-    print("id de invitado: $id");
+    //print("id de invitado: $id");
     invitaciones = (await _invitacionProvider.invitaciones(id))!;
-    print("controller impr");
-    print(invitaciones[0].jugadorNombre);
+    //print("controller impr");
+    //print(invitaciones[0].jugadorNombre);
     refresh!();   
   }
 

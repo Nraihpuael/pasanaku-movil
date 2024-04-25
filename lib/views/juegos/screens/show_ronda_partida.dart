@@ -1,33 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:pasanaku/models/juego.dart';
-import 'package:pasanaku/views/juegos/controllers/show_juego_controller.dart';
-import 'package:pasanaku/views/juegos/screens/show_rondas.dart';
+import 'package:pasanaku/models/partida.dart';
 
-import '../../shared/widgets/custom_filled_button.dart';
+import '../../../models/user.dart';
+import '../controllers/rondas_controller.dart';
 
-class ShowJuegoScreen extends StatefulWidget {
-  final Juego? juego;
-  const ShowJuegoScreen({super.key, this.juego});
+class ShowRondaPartida extends StatefulWidget {
+  final Partida? partida;
+  final RondasEnpartida? rondaPartida;
+  final User? user;
+
+  const ShowRondaPartida(
+      {super.key, this.partida, this.rondaPartida, this.user});
 
   @override
-  State<ShowJuegoScreen> createState() => _ShowJuegoScreenState();
+  State<ShowRondaPartida> createState() => _ShowRondaPartidaState();
 }
 
-class _ShowJuegoScreenState extends State<ShowJuegoScreen> {
-  final ShowJuegoController _con = ShowJuegoController();
-  @override
+class _ShowRondaPartidaState extends State<ShowRondaPartida> {
+  RondaController _con = RondaController();
+  void mostrarMensaje(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('¡Mensaje emergente mostrado!'),
+        duration: Duration(seconds: 2),
+        action: SnackBarAction(
+          label: 'Cerrar',
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+  }
+
   void initState() {
     // TODO: implement initState
     super.initState();
-    int? id = widget.juego?.partida!.id!.toInt();
+    print(widget.rondaPartida);
+    int? id = widget.rondaPartida?.id;
+    print('id:  =>>>>>   $id');
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh, id!);
     });
-    
   }
 
-  //vvbvb
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,12 +59,12 @@ class _ShowJuegoScreenState extends State<ShowJuegoScreen> {
               ListTile(
                 //titleAlignment: ListTileTitleAlignment.center,
                 title: Text('Nombre'),
-                subtitle: Text(_con.partida!.nombre.toString()??""),
+                subtitle: Text(widget.rondaPartida!.nombre),
               ),
               ListTile(
                 title: Text('Fecha de inicio'),
-                subtitle: Text(_con.partida!.fechaInicio!.toIso8601String()??""),
-              ),
+                subtitle: Text(_con.subasta!.fechaInicio.hour.toString()??""),
+              ),/*
               ListTile(
                 title: Text('Cuota inicial'),
                 subtitle: Text(_con.partida!.coutaInicial.toString()??""),
@@ -89,7 +106,7 @@ class _ShowJuegoScreenState extends State<ShowJuegoScreen> {
                   //context.go('/home');
                   //Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
                 },
-              )),
+              )),*/
               
             ],
           ),
