@@ -1,10 +1,12 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:pasanaku/models/models.dart';
 import 'package:pasanaku/models/partida.dart';
 import 'package:pasanaku/providers/juego_provider.dart';
 import 'package:pasanaku/providers/oferta_provider.dart';
 import 'package:pasanaku/providers/partida_provider.dart';
+import 'package:pasanaku/views/shared/widgets/my_snackbar.dart';
 
 import '../../../models/juego.dart';
 import '../../../models/user.dart';
@@ -41,7 +43,13 @@ class JuegosController{
 
   void enviarPuja(int puja, int subastaId, int jugadorId) async{
     print("$puja, $subastaId, $jugadorId");
-    await _ofertaProvider.enviarPuja(jugadorId, subastaId, puja);    
+    ResponseApi? responseApi = await _ofertaProvider.enviarPuja(jugadorId, subastaId, puja);    
+    if (responseApi!.message == "No se puede ingresar pujas a esta subasta"){
+      MySnackbar.show(context!, "No se puede ingresar pujas");
+    } else {
+      MySnackbar.show(context!, "puja ingresada con exito");
+    }
+    
   }
 
   
