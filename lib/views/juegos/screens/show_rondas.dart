@@ -1,11 +1,15 @@
 
 import 'package:flutter/material.dart';
+import 'package:pasanaku/models/models.dart';
 import 'package:pasanaku/models/partida.dart';
+import 'package:pasanaku/views/juegos/screens/show_apuesta_screen.dart';
 
 
 class ShowRondaScreen extends StatefulWidget {
   final Partida? partida;
-  const ShowRondaScreen({super.key, this.partida});
+  final RondasEnpartida? rondaPartida;
+  final User? user;
+  const ShowRondaScreen({super.key, this.partida, this.user, this.rondaPartida});
 
   @override
   State<ShowRondaScreen> createState() => _ShowRondaScreenState();
@@ -23,6 +27,12 @@ class _ShowRondaScreenState extends State<ShowRondaScreen> {
                   itemBuilder: (contex, index){
                     
                     return GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => ShowApuestaScreen( partida: widget.partida ,rondaPartida: widget.partida!.rondasEnpartida![index], user: widget.user) )
+                          
+                        );
+                      },
                       child: ListTile(
                         title: Text(widget.partida!.rondasEnpartida![index].nombre.toString()),
                         subtitle: Column(

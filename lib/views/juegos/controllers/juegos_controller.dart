@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:pasanaku/models/partida.dart';
 import 'package:pasanaku/providers/juego_provider.dart';
+import 'package:pasanaku/providers/oferta_provider.dart';
 import 'package:pasanaku/providers/partida_provider.dart';
 
 import '../../../models/juego.dart';
@@ -18,6 +19,7 @@ class JuegosController{
   User? user;
   JuegoProvider _juegoProvider = JuegoProvider();
   PartidaProvider _partidaProvider = PartidaProvider();
+  OfertaProvider _ofertaProvider = OfertaProvider();
   List<Juego> juegos = [];
 
 
@@ -35,6 +37,12 @@ class JuegosController{
     print(juegos);
     refresh!();
   } 
+
+
+  void enviarPuja(int puja, int subastaId, int jugadorId) async{
+    print("$puja, $subastaId, $jugadorId");
+    await _ofertaProvider.enviarPuja(jugadorId, subastaId, puja);    
+  }
 
   
 

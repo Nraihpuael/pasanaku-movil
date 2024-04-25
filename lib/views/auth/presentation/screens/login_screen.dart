@@ -63,8 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   refresh() {
-    setState(() {      
-    });
+    setState(() {});
   }
 }
 
@@ -143,11 +142,8 @@ class _LoginFormState extends State<_LoginForm> {
       ),
     );
   }
-  
-  void refresh(){
-  setState(() {
-    
-  });
 
-}
+  void refresh() {
+    setState(() {});
+  }
 }
