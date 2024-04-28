@@ -32,48 +32,55 @@ class _InvitacionesPendientesScreenState
       appBar: AppBar(
         title: Text('Invitaciones Pendientes'),
       ),
-      body: ListView.builder(
-        itemCount: _con.invitaciones.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_con.invitaciones[index].partidaNombre
-                .toString()
-                .toUpperCase()),
-            subtitle: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    "Monto: ${_con.invitaciones[index].partidaPozo.toString()}"),
-                Text(
-                    "Fecha Incio: ${_con.invitaciones[index].partidaFecha.toString()}")
-              ],
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  iconSize: 50,
-                  icon: Icon(
-                    Icons.remove_red_eye_outlined,
+      body: (_con.invitaciones ?? []).isEmpty
+          ? const Center(
+              child: Text(
+                'No hay invitaciones que mostrar.',
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+              ),
+            )
+          : ListView.builder(
+              itemCount: _con.invitaciones.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_con.invitaciones[index].partidaNombre
+                      .toString()
+                      .toUpperCase()),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "Monto: ${_con.invitaciones[index].partidaPozo.toString()}"),
+                      Text(
+                          "Fecha Incio: ${_con.invitaciones[index].partidaFecha.toString()}")
+                    ],
                   ),
-                  onPressed: () {
-                    // Lógica para aceptar la invitación
-                    ShowDialog(context, index);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    // Lógica para rechazar la invitación
-                    //ShowDialog(context, index);
-                  },
-                ),
-              ],
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        iconSize: 50,
+                        icon: Icon(
+                          Icons.remove_red_eye_outlined,
+                        ),
+                        onPressed: () {
+                          // Lógica para aceptar la invitación
+                          ShowDialog(context, index);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          // Lógica para rechazar la invitación
+                          //ShowDialog(context, index);
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 2,
         items: const <BottomNavigationBarItem>[
