@@ -17,7 +17,7 @@ class PartidaProvider{
 
   Future<Partida?> partidas(int? id)async{
     try {
-      Uri url = Uri.http(_url, '$_api/partida/$id');
+      Uri url = Uri.https(_url, '$_api/partida/$id');
       final res = await http.get(url);
       print(res.body);
       final data = json.decode(res.body);
@@ -38,7 +38,7 @@ class PartidaProvider{
   Future<Subasta?> subasta(int? id) async{
   
     try {
-      Uri url = Uri.http(_url, '$_api/subasta/$id');
+      Uri url = Uri.https(_url, '$_api/subasta/$id');
       final res = await http.get(url);
       print(res.body);
       final data = json.decode(res.body);

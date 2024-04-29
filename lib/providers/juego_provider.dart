@@ -13,7 +13,7 @@ class JuegoProvider{
 
   Future<List<Juego>?> juegos(int? id)async{
     try {
-      Uri url = Uri.http(_url, '$_api/$id/participaciones');
+      Uri url = Uri.https(_url, '$_api/$id/participaciones');
       final res = await http.get(url);
       print(res.body);
       final data = json.decode(res.body);

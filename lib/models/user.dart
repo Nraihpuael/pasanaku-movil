@@ -13,7 +13,7 @@ class User {
     String? email;
     String? direccion;
     String? password;
-    String? token;
+    String? tokenMovil;
 
     User({
       
@@ -24,7 +24,7 @@ class User {
       this.direccion,
       this.password,  
       this.id, 
-      this.token
+      this.tokenMovil
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
@@ -35,7 +35,7 @@ class User {
         email: json["email"],
         direccion: json["direccion"],
         password: json["password"],
-        token: json["tokenMovil"]
+        tokenMovil: json["tokenMovil"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -46,7 +46,7 @@ class User {
         "email": email,
         "direccion": direccion,
         "password": password,
-        //"tokenMovil": token
+        "tokenMovil": tokenMovil
     };
 
     Map<String, dynamic> toJsonReg() => {
@@ -57,7 +57,7 @@ class User {
         "email": email,
         "direccion": direccion,
         "password": password,
-        "tokenMovil": token
+        "tokenMovil": tokenMovil
     };
 }
 

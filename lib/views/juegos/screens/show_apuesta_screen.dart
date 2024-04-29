@@ -55,6 +55,8 @@ class _ShowApuestaScreenState extends State<ShowApuestaScreen> {
                       int subastaId = widget.rondaPartida!.id;
                       int? jugadorId = widget.user!.id;
                       _con.enviarPuja(puja, subastaId, jugadorId!);
+
+                      
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

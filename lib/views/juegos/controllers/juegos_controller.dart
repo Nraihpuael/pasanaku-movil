@@ -43,8 +43,12 @@ class JuegosController{
 
   void enviarPuja(int puja, int subastaId, int jugadorId) async{
     print("$puja, $subastaId, $jugadorId");
+    print("respesta desde el cotrolador de la puja: =========>>>>>>>>");
+    
     ResponseApi? responseApi = await _ofertaProvider.enviarPuja(jugadorId, subastaId, puja);    
+    print(responseApi);
     if (responseApi!.message == "No se puede ingresar pujas a esta subasta"){
+      print("ingreso por el true ==>>>>>>>>");
       MySnackbar.show(context!, "No se puede ingresar pujas");
     } else {
       MySnackbar.show(context!, "puja ingresada con exito");

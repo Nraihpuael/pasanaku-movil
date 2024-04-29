@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pasanaku/models/partida.dart';
@@ -103,25 +105,28 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
               /*_con.subasta!.ganador.toString() != null ?
               ListTile(
                 title: Text('Ganador'),
-                subtitle: Text(_con.subasta!.ganador.toString()),
+                subtitle: Text(_con.subasta!.ganador.toStri_con.subasta!.estado.toString() != 'Iniciada'ng()),
               ): Text("Aun no se encuentra ganador"),*/
-              SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: CustomFilledButton(
-                text: 'Pujar',
-                buttonColor: Color(0xFFFDE047),
-                onPressed: () {
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                  builder: (context) => ShowApuestaScreen(partida: widget.partida, user: widget.user, rondaPartida: widget.rondaPartida,),
-                ),
-              );
-                  //context.go('/home');
-                  //Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
-                },
-              )),
+              
+              //print(_con.subasta!.estado.toString() != 'Iniciada'),
+              if (_con.subasta!.estado.toString() != 'Iniciada' )
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: CustomFilledButton(
+                  text: 'Pujarr',
+                  buttonColor: Color(0xFFFDE047),
+                  onPressed: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => ShowApuestaScreen(partida: widget.partida, user: widget.user, rondaPartida: widget.rondaPartida,),
+                  ),
+                  );
+                  },
+                )
+              
+              ) 
               
             ],
           ),
