@@ -35,15 +35,15 @@ class _InvitacionesPendientesScreenState
       body: (_con.invitaciones ?? []).isEmpty
           ? const Center(
               child: Text(
-                'No hay invitaciones que mostrar.',
+                'No tiene invitaciones',
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
               ),
             )
           : ListView.builder(
-              itemCount: _con.invitaciones.length,
+              itemCount: _con.invitaciones!.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_con.invitaciones[index].partidaNombre
+                  title: Text(_con.invitaciones![index].partidaNombre
                       .toString()
                       .toUpperCase()),
                   subtitle: Column(
@@ -51,9 +51,9 @@ class _InvitacionesPendientesScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          "Monto: ${_con.invitaciones[index].partidaPozo.toString()}"),
+                          "Monto: ${_con.invitaciones![index].partidaPozo.toString()}"),
                       Text(
-                          "Fecha Incio: ${_con.invitaciones[index].partidaFecha.toString()}")
+                          "Fecha Incio: ${_con.invitaciones![index].partidaFecha.toString()}")
                     ],
                   ),
                   trailing: Row(
@@ -107,25 +107,25 @@ class _InvitacionesPendientesScreenState
       builder: (context) {
         return AlertDialog(
           title: Text(
-              'Invitacion a: ${_con.invitaciones[index].partidaNombre.toString().toUpperCase()}'),
+              'Invitacion a: ${_con.invitaciones![index].partidaNombre.toString().toUpperCase()}'),
           content: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                  'Usted a sido invitado a participar en el juego: ${_con.invitaciones[index].partidaNombre.toString().toUpperCase()}'),
-              Text('Con un monto de: ${_con.invitaciones[index].partidaPozo}'),
+                  'Usted a sido invitado a participar en el juego: ${_con.invitaciones![index].partidaNombre.toString().toUpperCase()}'),
+              Text('Con un monto de: ${_con.invitaciones![index].partidaPozo}'),
               Text('pago por ronda: 100 Bs.'),
               Text('Numero de Rondas: 10'),
               Text(
-                  'Fecha de inicio: ${DateTime.parse(_con.invitaciones[index].partidaFecha.toString())}'),
+                  'Fecha de inicio: ${DateTime.parse(_con.invitaciones![index].partidaFecha.toString())}'),
             ],
           ),
           actions: [
             FloatingActionButton(
               child: Text('Aceptar'),
               onPressed: () {
-                _con.aceptarInvitacion(_con.invitaciones[index].id);
+                _con.aceptarInvitacion(_con.invitaciones![index].id);
                 Navigator.of(context).pop();
                 context.go('/home');
               },
@@ -134,7 +134,7 @@ class _InvitacionesPendientesScreenState
               child: Text('Rechazar'),
               onPressed: () {
                 // Aquí iría la lógica para rechazar la invitación
-                _con.rechazarInvitacion(_con.invitaciones[index].id);
+                _con.rechazarInvitacion(_con.invitaciones![index].id);
                 Navigator.of(context).pop();
                 context.go('/home');
               },
