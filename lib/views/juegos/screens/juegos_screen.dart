@@ -47,30 +47,83 @@ class _JuegosScreenState extends State<JuegosScreen> {
               );
               //Navigator.push(context, context.push('/show-juego') as Route<Object?>);
             },
-            child: ListTile(
-              title: Text(_con.juegos[index].partida!.nombre!.toUpperCase()
-                  .toString()
-                  .toUpperCase()),
-              subtitle: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Margen alrededor del contenedor
+              padding: const EdgeInsets.all(16), // Espacio interno
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                border: Border.all(color: Colors.grey.shade300), // Borde gris claro
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: Offset(1, 3), // Sombra desplazada
+                  ),
+                ],
+              ),
+              child: Row(
                 children: [
-                  Text(
-                      "Estado: ${_con.juegos[index].partida!.estado.toString()}"),
-                  Text(
-                      "Cuota: ${_con.juegos[index].partida!.fechaInicio.toString()}")
+                  Expanded( // Permite expansión horizontal
+                    child: Column( 
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_con.juegos[index].partida!.nombre!.toUpperCase() ?? 'Sin nombre',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "Estado: ${_con.juegos[index].partida!.estado.toString()}",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                        Text(
+                          "Cuota inicial: ${_con.juegos[index].partida!.coutaInicial.toString()}",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward, color: Colors.grey), // Icono al final
                 ],
               ),
             ),
           );
         },
       ),
-
-    
-    );   
+    );
   }
+
   void refresh() {
     setState(() {});
   }
-  
 }
+//             child: ListTile(
+//               title: Text(_con.juegos[index].partida!.nombre!.toUpperCase()
+//                   .toString()
+//                   .toUpperCase()),
+//               subtitle: Column(
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                       "Estado: ${_con.juegos[index].partida!.estado.toString()}"),
+//                   Text(
+//                       "Cuota: ${_con.juegos[index].partida!.coutaInicial.toString()}")
+//                 ],
+//               ),
+//             ),
+//           );
+//         },
+//       ),
+
+    
+//     );   
+//   }
+//   void refresh() {
+//     setState(() {});
+//   }
+  
+// }

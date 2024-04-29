@@ -31,10 +31,8 @@ class ShowJuegoController{
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
-    this.estado = true;
+    estado = true;
     getPartida(idPartida);
-    
-    
   }
 
   void getPartida(int? id) async{

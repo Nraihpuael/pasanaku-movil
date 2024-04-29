@@ -141,7 +141,11 @@ class _RegisterFormState extends State<_RegisterForm> {
           const SizedBox( height: 10 ),
           
           CustomTextFormField(
+
             label: 'C.I.',
+
+          
+
             keyboardType: TextInputType.number,
             controller: _con.ciController,
           ),

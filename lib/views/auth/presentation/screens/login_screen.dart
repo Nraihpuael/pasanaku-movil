@@ -101,7 +101,7 @@ class _LoginFormState extends State<_LoginForm> {
           Text('Iniciar Sesión', style: textStyles.titleMedium),
           const SizedBox(height: 70),
           CustomTextFormField(
-            label: 'Nro de Celular',
+            label: 'Correo electrónico',
             keyboardType: TextInputType.emailAddress,
             controller: _con.emailController,
           ),

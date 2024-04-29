@@ -17,7 +17,7 @@ class LoginController{
   Function? refresh;
   User? user;
   InvitacionProvider _invitacionProvider = InvitacionProvider();
-  List<Invitacion> invitaciones = [];
+  List<Invitacion>? invitaciones = [];
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -31,7 +31,7 @@ class LoginController{
     await userProvider.init(context);
     user = User.fromJson(await _sharedPref.read('user') ?? {});
     getInvitaciones(user?.id);    
-    if(invitaciones.length > 0){
+    if(invitaciones!.isNotEmpty){
     } else{
       if (user!.email != null){
           context.go('/home');
@@ -41,17 +41,39 @@ class LoginController{
   }
 
   void getInvitaciones(int? id) async{
+    // print("id de invitado: $id");
+    // invitaciones = (await _invitacionProvider.invitaciones(id))!;
+    // print(invitaciones);
+    // invitaciones.length;
+    // refresh!();
+    try {
     print("id de invitado: $id");
-    invitaciones = (await _invitacionProvider.invitaciones(id))!;
-    print(invitaciones);
-    invitaciones.length;
-    refresh!();
+    
+    invitaciones = await _invitacionProvider.invitaciones(id);
+
+    if (invitaciones == null ) {
+      print("No hay invitaciones para el ID: $id");
+      invitaciones = [];
+    } else {
+      invitaciones = invitaciones;
+    }
+
+    // Llama a refresh solo si no es nulo
+    if (refresh != null) {
+      refresh!();
+    }
+
+    } catch (e) {
+      print("Error al obtener invitaciones: $e");
+      // Manejar el error según sea necesario, puedes mostrar un mensaje al usuario
+    }
   }
   
   void login(BuildContext con) async{
     String email = emailController.text;
     String password = passwordController.text;
     ResponseApi? responseApi = await userProvider.login(email, password);
+    print('Response from server: ${responseApi.toString()}');
     MySnackbar.show(context!, responseApi.toString());
     print('email: $email, password: $password');
     if (responseApi?.data != null){
