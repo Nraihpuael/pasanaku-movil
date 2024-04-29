@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     
     final textStyles = Theme.of(context).textTheme;
     print("impriminedo invitaciones en el page::::::");
-    print("invitacionoeeee:  fogofg ${con.invitaciones.length}");
+    print("invitacionoeeee:  fogofg ${con.invitaciones!.length}");
     return Scaffold(  
       key: con.key,
       drawer: _drawer(textStyles, con),    
@@ -48,7 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
+      body:  (con.invitaciones ?? []).isEmpty
+          ? const Center(
+              child: Text(
+                'No tiene partidas disponibles',
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+              ),
+            )
+          : 
+        Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -57,9 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 200,
                 child: 
                 ListView.builder(
-                        itemCount: con.invitaciones.length,
+                        itemCount:  con.invitaciones!.length,
                         itemBuilder: (BuildContext context, index){
-                          Invitacion invitacion = con.invitaciones[index];
+                          Invitacion invitacion = con.invitaciones![index];
                           return ListTile(
                           onTap: (){
                             print("gollllllllllllllll");
@@ -69,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             dense: true,
                             leading: Icon(Icons.play_circle_filled),
                             title: Text(
-                              con.invitaciones[index].partidaNombre.toString().toUpperCase(),
+                              con.invitaciones![index].partidaNombre.toString().toUpperCase(),
                               style: textStyles.titleSmall,
                             ),
                             subtitle: Text('En Juego'),
