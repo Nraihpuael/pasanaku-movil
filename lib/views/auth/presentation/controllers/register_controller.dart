@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -34,7 +35,7 @@ class RegisterController{
     String ci = ciController.text;
     String password = passwordController.text.trim();
     String direccion = direccionController.text.trim();
-
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
 
     if (email.isEmpty || name.isEmpty || phone.isEmpty || ci.isEmpty || password.isEmpty || direccion.isEmpty){
       MySnackbar.show(context!, 'Debes ingresar todos los campos');
@@ -49,7 +50,8 @@ class RegisterController{
       direccion: direccion,
       telefono: phone,
       password: password, 
-      ci: ci
+      ci: ci,
+      tokenMovil: fcmToken, 
     );
 
 

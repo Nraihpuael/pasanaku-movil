@@ -55,9 +55,16 @@ class _ShowApuestaScreenState extends State<ShowApuestaScreen> {
                       int subastaId = widget.rondaPartida!.id;
                       int? jugadorId = widget.user!.id;
                       _con.enviarPuja(puja, subastaId, jugadorId!);
-                      //_con.login(context);
-                      //context.go('/home');
-                      //Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+
+                      
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              'Mensaje mostrado después de presionar el botón'),
+                          duration:
+                              Duration(seconds: 2), // Duración del SnackBar
+                        ),
+                      );
                     },
                   )
                 ],
