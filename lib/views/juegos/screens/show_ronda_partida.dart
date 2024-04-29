@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pasanaku/models/partida.dart';
-
 import '../../../models/user.dart';
 import '../controllers/rondas_controller.dart';
 
@@ -10,61 +9,82 @@ class ShowRondaPartida extends StatefulWidget {
   final RondasEnpartida? rondaPartida;
   final User? user;
 
-  const ShowRondaPartida(
-      {super.key, this.partida, this.rondaPartida, this.user});
+  const ShowRondaPartida({
+    Key? key,
+    this.partida,
+    this.rondaPartida,
+    this.user,
+  }) : super(key: key);
 
   @override
   State<ShowRondaPartida> createState() => _ShowRondaPartidaState();
 }
 
 class _ShowRondaPartidaState extends State<ShowRondaPartida> {
-  RondaController _con = RondaController();
-  void mostrarMensaje(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('¡Mensaje emergente mostrado!'),
-        duration: Duration(seconds: 2),
-        action: SnackBarAction(
-          label: 'Cerrar',
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
-  }
+  final RondaController _con = RondaController(); // Final para mayor seguridad
+  bool isLoading = true; // Controlar el estado de carga
 
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print(widget.rondaPartida);
+
     int? id = widget.rondaPartida?.id;
-    print('id:  =>>>>>   $id');
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      _con.init(context, refresh, id!);
+
+    if (id == null) { // Verificar id antes de usar
+      print('Error: id es null'); // Para depuración
+      return;
+    }
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _con.init(context, refresh, id); // Iniciar controlador si id no es nulo
+      setState(() {
+        isLoading = false; // Cambiar estado de carga
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("detalle juego"),
+      appBar: AppBar(
+        title: const Text("Detalle del Juego"),
+      ),
+      body: Center(
+        child: isLoading
+          ? const CircularProgressIndicator() // Indicador de carga
+          : buildRondaDetails(), // Mostrar detalles de la ronda
+      ),
+    );
+  }
+
+  Widget buildRondaDetails() {
+    if (widget.rondaPartida == null) { // Si rondaPartida es nulo
+      return const Text("Cargando datos..."); // Mensaje de carga
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: const Text("Nombre"),
+          subtitle: Text(widget.rondaPartida?.nombre ?? "No disponible"), // Manejo seguro
         ),
-        body: SizedBox(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ListTile(
-                //titleAlignment: ListTileTitleAlignment.center,
-                title: Text('Nombre'),
-                subtitle: Text(widget.rondaPartida!.nombre),
-              ),
-              ListTile(
-                title: Text('Fecha de inicio'),
-                subtitle: Text(_con.subasta!.fechaInicio.hour.toString()??""),
-              ),/*
+        ListTile(
+          title: const Text("Fecha de inicio"),
+          subtitle: Text(
+            _con.subasta?.fechaInicio?.hour?.toString() ?? "Cargando..", // Manejo seguro
+          ),
+        ),
+      ],
+    );
+  }
+
+  void refresh() {
+    setState(() {});
+  }
+}
+
+              /*
               ListTile(
                 title: Text('Cuota inicial'),
                 subtitle: Text(_con.partida!.coutaInicial.toString()??""),
@@ -107,13 +127,3 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
                   //Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
                 },
               )),*/
-              
-            ],
-          ),
-        ));
-  }
-
-  void refresh() {
-    setState(() {});
-  }
-}
