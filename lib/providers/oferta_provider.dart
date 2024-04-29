@@ -23,7 +23,7 @@ class OfertaProvider{
   Future<void> enviarPuja(int jugadorId, int subastaId, int puja) async{
     
     try {
-      Uri uri = Uri.http(_url, _api);
+      Uri uri = Uri.https(_url, _api);
       String bodyParams = json.encode({'puja': puja, 'subastaId': subastaId, 'jugadorId': jugadorId});
       Map<String, String> headers = {
         'Content-Type': 'application/json',

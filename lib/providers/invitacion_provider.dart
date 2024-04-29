@@ -12,7 +12,7 @@ class InvitacionProvider{
   
   Future<List<Invitacion>?> invitaciones(int? id)async{
     try {
-      Uri url = Uri.http(_url, '$_api/invitaciones/$id');
+      Uri url = Uri.https(_url, '$_api/invitaciones/$id');
       final res = await http.get(url);
       final data = json.decode(res.body);
       Invitacion invitacion = Invitacion.fromJsonList(data);
@@ -28,7 +28,7 @@ class InvitacionProvider{
 
   Future<void> aceptarInvitacion(int idInvitacion) async{
     try {
-      Uri url = Uri.http(_url, '$_api/aceptar/$idInvitacion');
+      Uri url = Uri.https(_url, '$_api/aceptar/$idInvitacion');
       final res = await http.put(url);
       final data = json.decode(res.body);
       return data;
@@ -41,7 +41,7 @@ class InvitacionProvider{
   }
   Future<void> rechazarInvitacion(int idInvitacion) async{
     try {
-      Uri url = Uri.http(_url, '$_api/rechazar/$idInvitacion');
+      Uri url = Uri.https(_url, '$_api/rechazar/$idInvitacion');
       final res = await http.put(url);
       final data = json.decode(res.body);
       return data;

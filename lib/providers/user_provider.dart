@@ -23,7 +23,7 @@ class UserProvider {
   ///respnde un responseapu
   Future<ResponseApi?> create(User user) async {
     try {
-      Uri uri = Uri.http(_url, '$_api/register');
+      Uri uri = Uri.https(_url, '$_api/register');
       String bodyParams = json.encode(user);
       Map<String, String> headers = {
         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ class UserProvider {
   Future<ResponseApi?> login(String email, String password) async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     try {
-      Uri uri = Uri.http(_url, '$_api/login');
+      Uri uri = Uri.https(_url, '$_api/login');
       String bodyParams = json.encode(
           {'email': email, 'password': password, "tokenMovil": fcmToken});
       Map<String, String> headers = {
