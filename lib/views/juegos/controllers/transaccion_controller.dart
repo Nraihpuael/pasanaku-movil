@@ -19,19 +19,32 @@ class TransaccionController {
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
     getTransacciones(user!.id);
+    //refresh();
   }
 
 
   void getTransacciones(int? id) async{
     
+    try {
     print("id de invitado: $id");
+    
     transaccion = (await _transaccionProvider.transacciones(id))!;
-    print('transaccion controller');
-    print(transaccion);
-    //if (estado == true){
+
+    if (transaccion == null ) {
+      print("No hay invitaciones para el ID: $id");
+      transaccion = [];
+    } else {
+      transaccion = transaccion;
+    }
+
+    // Llama a refresh solo si no es nulo
+    if (refresh != null) {
       refresh!();
-      //estado = false;
-    //}
-    //
+    }
+    print("finalizo el get invitaciones>>>>>>>");
+    } catch (e) {
+      print("Error al obtener invitaciones: $e");
+      // Manejar el error según sea necesario, puedes mostrar un mensaje al usuario
+    }
   } 
 }

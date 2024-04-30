@@ -16,6 +16,7 @@ class _InvitacionesPendientesScreenState
     extends State<InvitacionesPendientesScreen> {
   InvitacionesPendientesController _con = InvitacionesPendientesController();
 
+
   @override
   void initState() {
     // TODO: implement initState

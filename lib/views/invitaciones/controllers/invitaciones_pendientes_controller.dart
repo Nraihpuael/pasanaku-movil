@@ -20,7 +20,9 @@ class InvitacionesPendientesController{
     this.context = context;
     this.refresh = refresh;
     user = User.fromJson(await _sharedPref.read('user'));
+    print("entra en invitaciones pendiente controller para aceprar las invi");
     getInvitaciones(user!.id);
+    print("finaliza las invitaciones controleller");
     
   }
 
@@ -45,7 +47,7 @@ class InvitacionesPendientesController{
     if (refresh != null) {
       refresh!();
     }
-
+    print("finalizo el get invitaciones>>>>>>>");
     } catch (e) {
       print("Error al obtener invitaciones: $e");
       // Manejar el error según sea necesario, puedes mostrar un mensaje al usuario

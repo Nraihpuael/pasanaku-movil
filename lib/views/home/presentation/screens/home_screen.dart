@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pasanaku/models/invitacion.dart';
 import 'package:pasanaku/views/home/presentation/controllers/home_controller.dart';
 import 'package:pasanaku/views/juegos/screens/subir_qr_screen.dart';
+import 'package:pasanaku/views/juegos/screens/transacciones_screen.dart';
 import 'package:pasanaku/views/shared/widgets/custom_filled_button.dart';
 
 
@@ -201,18 +202,7 @@ Widget _drawer(TextTheme styles, HomeController con){
             ],
           )
         ),
-        SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: CustomFilledButton(
-              text: 'Cerrar sesion',
-              buttonColor: Color(0xff4339B0),
-              onPressed: (){
-                con.logout();
-              },
-            )
-          ),
-          SizedBox(height: 20,),
+        SizedBox(height: 20,),
           SizedBox(
             width: double.infinity,
             height: 50,
@@ -228,10 +218,40 @@ Widget _drawer(TextTheme styles, HomeController con){
                   ),
                 ),
               );
+              },
+            )
+          ),
+        SizedBox(height: 20,),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: CustomFilledButton(
+              text: 'Transacciones',
+              buttonColor: Color(0xff4339B0),
+              onPressed: (){
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TransaccionesScreen(),
+                ),
+              );
                 print("tenemos que subir qr");
               },
             )
-          )
+          ),
+        SizedBox(height: 20,),
+        SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: CustomFilledButton(
+              text: 'Cerrar sesion',
+              buttonColor: Color(0xff4339B0),
+              onPressed: (){
+                con.logout();
+              },
+            )
+          ),
+          
         
         
         

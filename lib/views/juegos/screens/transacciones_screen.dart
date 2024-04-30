@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:pasanaku/views/juegos/controllers/transaccion_controller.dart';
 
 class TransaccionesScreen extends StatefulWidget {
   const TransaccionesScreen({Key? key}) : super(key: key);
 
   @override
   _TransaccionesScreenState createState() => _TransaccionesScreenState();
+
 }
 
 class _TransaccionesScreenState extends State<TransaccionesScreen> {
+  
+  TransaccionController _con = TransaccionController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
+  }
+  
   final List<Map<String, dynamic>> transacciones = [
     {
       'ganador': 'Juan Pérez',
@@ -39,9 +53,9 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
         title: const Text("Transacciones"),
       ),
       body: ListView.builder(
-        itemCount: transacciones.length,
+        itemCount: _con.transaccion.length,
         itemBuilder: (context, index) {
-          final transaccion = transacciones[index]; // Obtener el elemento actual
+          final transaccion = _con.transaccion[index]; // Obtener el elemento actual
           return GestureDetector(
             onTap: () {
               // Navegar a la pantalla de detalles usando idGanador
@@ -49,7 +63,7 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetallesTransaccionScreen(
-                    idTransaccion: transaccion['idGanador'], // Pasar el ID
+                    idTransaccion: transaccion.id.toString(), // Pasar el ID
                   ),
                 ),
               );
@@ -77,19 +91,19 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start, // Alineación izquierda
                       children: [
                         Text(
-                          transaccion['ganador'], // Ganador
+                          transaccion.receptor!.nombre, // Ganador
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
-                        Text(transaccion['estado']), // Estado de la transacción
-                        Text("Monto: ${transaccion['monto']} Bs."), // Monto
+                        Text(transaccion.estado.toString()), // Estado de la transacción
+                        Text("Monto: ${transaccion.monto} Bs."), // Monto
                       ],
                     ),
                   ),
                   Text(
-                    "Fecha límite: ${transaccion['fechaLimite']}", // Fecha límite
+                    "Fecha límite: ${transaccion.fecha}", // Fecha límite
                     style: const TextStyle(color: Colors.grey), // Texto en gris
                   ),
                   const Icon(Icons.arrow_forward, color: Colors.grey), // Icono para interacción
@@ -100,6 +114,10 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
         },
       ),
     );
+  }
+
+  refresh() {
+    setState(() {});
   }
 }
 

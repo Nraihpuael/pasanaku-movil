@@ -14,12 +14,11 @@ class TransaccionProvider {
 
   Future<List<Transaccion>?> transacciones(int? id)async{
     try {
-      Uri url = Uri.https(_url, '$_api/invitaciones/$id');
+      Uri url = Uri.https(_url, '$_api/$id');
       final res = await http.get(url);
       final data = json.decode(res.body);
       Transaccion transaccion = Transaccion.fromJsonList(data);
-      //print("imprimiendo invitacion");
-      //print("${invitacion.id}, ${invitacion.jugadorNombre}, ${invitacion.partidaFecha}");
+      
       return transaccion.toList;
     } catch (e) {
       print("error $e");
