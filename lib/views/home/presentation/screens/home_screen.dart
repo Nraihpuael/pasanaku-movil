@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasanaku/models/invitacion.dart';
 import 'package:pasanaku/views/home/presentation/controllers/home_controller.dart';
+import 'package:pasanaku/views/juegos/screens/subir_qr_screen.dart';
 import 'package:pasanaku/views/shared/widgets/custom_filled_button.dart';
 
 
@@ -208,6 +209,26 @@ Widget _drawer(TextTheme styles, HomeController con){
               buttonColor: Color(0xff4339B0),
               onPressed: (){
                 con.logout();
+              },
+            )
+          ),
+          SizedBox(height: 20,),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: CustomFilledButton(
+              text: 'Subir QR',
+              buttonColor: Color(0xff4339B0),
+              onPressed: (){
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubirQrScreen(
+                    user: con.user,
+                  ),
+                ),
+              );
+                print("tenemos que subir qr");
               },
             )
           )
