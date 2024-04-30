@@ -47,31 +47,59 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
             children: [
               // Mostrar imagen estática desde assets
               Container(
-                height: 350,
+                height: 300,
+                width: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Color.fromARGB(255, 18, 18, 18),
+                  color: const Color(0xff4339B0),
                 ),
                 child: Center(
                   child: Image.asset(
                     'assets/qr_scanner.jpg', // Imagen estática
-                    height: 30,
+                    height: 280,
                   
                   ),
                 ),
               ),
 
-              const SizedBox(height: 20), // Espacio entre elementos
+             const SizedBox(height: 20), // Espacio entre elementos
 
-              ElevatedButton(
-                onPressed: _pickAndScanImage, // Escanear al seleccionar
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.cloud_upload), // Icono de subir
-                    const SizedBox(width: 10), // Espacio entre icono y texto
-                    const Text("Subir Imagen"),
-                  ],
+              // Botón personalizado con altura fija
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30), // Margen
+                child: GestureDetector(
+                  onTap: _pickAndScanImage, // Seleccionar y escanear
+                  child: Container(
+                    height: 45, // Altura del botón
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFDE047), // Color del botón
+                      borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(2, 2), // Sombra suave
+                        ),
+                      ],
+                    ),
+                    child: const Center( // Centrar el contenido
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.cloud_upload, color: Colors.black), // Icono y color
+                          SizedBox(width: 10), // Espacio entre icono y texto
+                          Text(
+                            "Subir Imagen",
+                            style: TextStyle(
+                              color: Colors.black, // Color del texto
+                              fontWeight: FontWeight.bold, // Resaltar
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

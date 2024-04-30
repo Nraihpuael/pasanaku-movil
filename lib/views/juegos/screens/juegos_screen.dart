@@ -100,30 +100,3 @@ class _JuegosScreenState extends State<JuegosScreen> {
     setState(() {});
   }
 }
-//             child: ListTile(
-//               title: Text(_con.juegos[index].partida!.nombre!.toUpperCase()
-//                   .toString()
-//                   .toUpperCase()),
-//               subtitle: Column(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                       "Estado: ${_con.juegos[index].partida!.estado.toString()}"),
-//                   Text(
-//                       "Cuota: ${_con.juegos[index].partida!.coutaInicial.toString()}")
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-
-    
-//     );   
-//   }
-//   void refresh() {
-//     setState(() {});
-//   }
-  
-// }
