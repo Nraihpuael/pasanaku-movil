@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pasanaku/config/router/app_router.dart';
 import 'package:pasanaku/config/theme/app_theme.dart';
 import 'package:pasanaku/firebase_options.dart';
@@ -14,17 +15,83 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //await Firebase.initializeApp();
   print("Handling a background message: ${message.messageId}");
 }
+bool _isBackgroundHandlerConfigured = false; // Marca si ya se ha configurado
+
+class NotificationService {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  NotificationService() {
+    _initializeLocalNotifications(); // Inicializa notificaciones locales
+    _configureFirebaseMessaging(); // Configura FCM para manejar mensajes
+  }
+
+  void _initializeLocalNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings("@mipmap/ic_launcher"); // Icono para Android
+
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
+        print('Notification received: ${notificationResponse.payload}');
+      },
+    );
+  }
+
+  void _configureFirebaseMessaging() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      _showNotification(message); // Muestra la notificación en primer plano
+    });
+
+  }
+
+  void _showNotification(RemoteMessage message) {
+    final androidDetails = AndroidNotificationDetails(
+      'your_channel_id', // ID del canal
+      'Your Channel Name', // Nombre del canal
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
+    );
+
+    final platformDetails = NotificationDetails(
+      android: androidDetails,
+    );
+
+    final title = message.notification?.title ?? 'Nueva Notificación';
+    final body = message.notification?.body ?? 'Contenido de la Notificación';
+
+    flutterLocalNotificationsPlugin.show(
+      message.messageId.hashCode, // ID único para la notificación
+      title,
+      body,
+      platformDetails,
+    );
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+   final notificationService = NotificationService(); // Instancia del servicio de notificaciones
+
+
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   requestNotificationPermission();
 
   // Configurar Firebase Messaging para mensajes en segundo plano
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  
+  
+  if (!_isBackgroundHandlerConfigured) {
+    // Registra el background handler solo si no ha sido configurado
+     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    _isBackgroundHandlerConfigured = true;
+  }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
@@ -37,7 +104,7 @@ Future<void> main() async {
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print(fcmToken);
-  runApp(const MainApp());
+  runApp(MainApp(notificationService));
 }
 
 Future<void> requestNotificationPermission() async {
@@ -55,7 +122,9 @@ Future<void> requestNotificationPermission() async {
 }
 
 class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+  final NotificationService notificationService;
+
+  const MainApp(this.notificationService, {super.key});
 
   @override
   State<MainApp> createState() => _MainAppState();
