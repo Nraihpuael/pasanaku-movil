@@ -60,12 +60,12 @@ class Transaccion {
 }
 
 class Deudor {
-    int id;
-    String nombre;
+    int? id;
+    String? nombre;
 
     Deudor({
-        required this.id,
-        required this.nombre,
+        this.id,
+        this.nombre,
     });
 
     factory Deudor.fromJson(Map<String, dynamic> json) => Deudor(
@@ -80,14 +80,14 @@ class Deudor {
 }
 
 class Receptor {
-    int id;
-    String nombre;
-    String imagen;
+    int? id;
+    String? nombre;
+    String? imagen;
 
     Receptor({
-        required this.id,
-        required this.nombre,
-        required this.imagen,
+        this.id,
+        this.nombre,
+        this.imagen,
     });
 
     factory Receptor.fromJson(Map<String, dynamic> json) => Receptor(

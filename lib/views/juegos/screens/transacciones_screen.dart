@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:pasanaku/models/transaccion.dart';
 import 'package:pasanaku/views/juegos/controllers/transaccion_controller.dart';
 
 class TransaccionesScreen extends StatefulWidget {
@@ -22,30 +23,6 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
     });
   }
   
-  final List<Map<String, dynamic>> transacciones = [
-    {
-      'ganador': 'Juan Pérez',
-      'idGanador': '12345',
-      'fechaLimite': '2024-05-30',
-      'monto': 100,
-      'estado': 'Pendiente',
-    },
-    {
-      'ganador': 'Ana López',
-      'idGanador': '12346',
-      'fechaLimite': '2024-06-15',
-      'monto': 150,
-      'estado': 'Pagado',
-    },
-    {
-      'ganador': 'Carlos Martínez',
-      'idGanador': '12347',
-      'fechaLimite': '2024-07-01',
-      'monto': 200,
-      'estado': 'Pendiente',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +40,7 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetallesTransaccionScreen(
+                    transaccion: transaccion,
                     idTransaccion: transaccion.id.toString(), // Pasar el ID
                   ),
                 ),
@@ -91,7 +69,7 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start, // Alineación izquierda
                       children: [
                         Text(
-                          transaccion.receptor!.nombre, // Ganador
+                          transaccion.receptor!.nombre.toString(), // Ganador
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -122,9 +100,10 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
 }
 
 class DetallesTransaccionScreen extends StatelessWidget {
-  final String idTransaccion;
+  final String? idTransaccion;
+  final Transaccion? transaccion;
 
-  const DetallesTransaccionScreen({required this.idTransaccion, Key? key}) : super(key: key);
+  const DetallesTransaccionScreen({this.idTransaccion, this.transaccion , Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +112,49 @@ class DetallesTransaccionScreen extends StatelessWidget {
         title: const Text("Detalles de la Transacción"),
       ),
       body: Center(
-        child: Text("Detalles de la transacción con ID: $idTransaccion"), // Mostrar detalles usando el ID
+        child: Column(
+        
+          children: [
+            ListTile(
+              title: Text(transaccion!.ronda.toString()),
+            ),
+            ListTile(
+              title: Text("Estado de la transaccion"),
+              subtitle: Text(transaccion!.estado.toString()),
+            ),
+            ListTile(
+              title: Text("Fecha limite a cancelar"),
+              subtitle: Text(transaccion!.fecha.toString()),
+            ),
+            ListTile(
+              title: Text("Monto a Pagar"),
+              subtitle: Text(transaccion!.monto.toString()),
+            ),
+            ListTile(
+              title: Text("Ganador: "),
+              subtitle: Text(transaccion!.receptor!.nombre.toString()),
+            ),
+            if (transaccion!.receptor!.imagen != null)
+              Image.network(
+              transaccion!.receptor!.imagen.toString(),
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                        : null,
+                  );
+                }
+              },
+              errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                return Text('Error loading image');
+              },
+            ),
+
+          ],
+        )
       ),
     );
   }
