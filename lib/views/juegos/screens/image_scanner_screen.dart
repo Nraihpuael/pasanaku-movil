@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart'; // Para seleccionar imágenes
 import 'dart:io'; // Para trabajar con archivos
 
 class ImageScannerScreen extends StatefulWidget {
-  const ImageScannerScreen({super.key});
+  final String? idRonda;
+  const ImageScannerScreen(
+      {this.idRonda, Key? key})
+      : super(key: key);
 
   @override
   State<ImageScannerScreen> createState() => _ImageScannerScreenState();
@@ -23,11 +29,25 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
   }
 
   // Método para escanear la imagen y disparar una acción
-  void _scanImage(File image) {
+  Future<void> _scanImage(File image) async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Escaneando imagen...")), // Mensaje de escaneo
     );
-
+    print("Imprimiendoo el idRonda desde paga>== ${widget.idRonda}");
+    //Uri url = Uri.https(_url, '$_api/rechazar/$idInvitacion');
+    try {
+      Uri url = Uri.https("pasanaku-api.adaptable.app", '/api/transferencia/pagar/${widget.idRonda}');
+      final res = await http.put(url);
+      print("imprimeiendo el res: $res");
+      //final data = json.decode(res.body);
+      //print("imprimiendo la data: $data");
+      //return data;   
+      ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Transaccion pagada")), // Mensaje de escaneo
+      );   
+    } catch (e) {
+      print("errorrr: $e");
+    }
     // Aquí puedes agregar lógica para escanear la imagen o hacer una petición
     // Ejemplo: enviar la imagen a un servidor para procesamiento
   }

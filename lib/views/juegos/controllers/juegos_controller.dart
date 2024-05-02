@@ -41,18 +41,39 @@ class JuegosController{
   } 
 
 
-  void enviarPuja(int puja, int subastaId, int jugadorId) async{
+  void enviarPuja(int puja, int subastaId, int jugadorId, BuildContext contexto) async{
     print("$puja, $subastaId, $jugadorId");
     print("respesta desde el cotrolador de la puja: =========>>>>>>>>");
     
     ResponseApi? responseApi = await _ofertaProvider.enviarPuja(jugadorId, subastaId, puja);    
-    print(responseApi);
-    if (responseApi!.message == "No se puede ingresar pujas a esta subasta"){
-      print("ingreso por el true ==>>>>>>>>");
-      MySnackbar.show(context!, "No se puede ingresar pujas");
+    print(responseApi!.message);
+    
+    
+    if (responseApi!.message!.startsWith("La oferta fue realiza exitosamente")){
+      ScaffoldMessenger.of(contexto).showSnackBar(
+      SnackBar(content: Text(responseApi.message.toString())), // Mensaje de escaneo
+      );  
+    } else if (responseApi!.message!.startsWith("No se puede ingresar pujas a esta subasta")){
+      ScaffoldMessenger.of(contexto).showSnackBar(
+      SnackBar(content: Text(responseApi.message.toString())), // Mensaje de escaneo
+      );  
+    } else if (responseApi.message!.startsWith("La puja debe ser al menos el 5% del pozo. Valor minimo permitido:")){      
+      ScaffoldMessenger.of(contexto).showSnackBar(
+      SnackBar(content: Text(responseApi.message.toString())), // Mensaje de escaneo
+      );  
+    } else if (responseApi.message!.startsWith("La puja no debe exceder el 50% del pozo. Valor máximo permitido:")){
+      ScaffoldMessenger.of(contexto).showSnackBar(
+      SnackBar(content: Text(responseApi.message.toString())), // Mensaje de escaneo
+      );  
+    } else if (responseApi.message!.startsWith("No se puede realizar pujas ya fuiste el ganador en una subasta")){
+      ScaffoldMessenger.of(contexto).showSnackBar(
+      SnackBar(content: Text(responseApi.message.toString())), // Mensaje de escaneo
+      );  
     } else {
-      MySnackbar.show(context!, "puja ingresada con exito");
-    }
+      ScaffoldMessenger.of(contexto).showSnackBar(
+      SnackBar(content: Text(responseApi.message.toString())), // Mensaje de escaneo
+      );  
+    } 
     
   }
 

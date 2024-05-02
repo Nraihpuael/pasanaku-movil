@@ -203,6 +203,19 @@ Widget _drawer(TextTheme styles, HomeController con){
           )
         ),
         SizedBox(height: 20,),
+        SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: CustomFilledButton(
+              text: "Notificaciones",
+              buttonColor: Color(0xff4339B0),
+              onPressed: (){
+                con.logout();
+              },
+            )
+          ),
+          
+        SizedBox(height: 20,),
           SizedBox(
             width: double.infinity,
             height: 50,

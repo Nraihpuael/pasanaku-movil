@@ -1,3 +1,5 @@
+//import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:pasanaku/models/models.dart';
 import 'package:pasanaku/views/shared/shared.dart';
@@ -54,17 +56,17 @@ class _ShowApuestaScreenState extends State<ShowApuestaScreen> {
                       int puja = int.parse(pujaController.text);
                       int subastaId = widget.rondaPartida!.id;
                       int? jugadorId = widget.user!.id;
-                      _con.enviarPuja(puja, subastaId, jugadorId!);
+                      _con.enviarPuja(puja, subastaId, jugadorId!, context);
 
                       
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      /*ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
                               'Mensaje mostrado después de presionar el botón'),
                           duration:
                               Duration(seconds: 2), // Duración del SnackBar
                         ),
-                      );
+                      );*/
                     },
                   )
                 ],
