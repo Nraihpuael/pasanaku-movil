@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 class TransaccionProvider {
 
   final String _url = Environment.API_DELIVERY;
-  final String _api = '/api/notification';
+  final String _api = '/api/transferencia';
 
 
   Future<List<Transaccion>?> transacciones(int? id)async{

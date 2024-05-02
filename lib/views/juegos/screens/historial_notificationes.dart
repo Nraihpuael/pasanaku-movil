@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:pasanaku/views/juegos/controllers/notificacion_controller.dart';
 
 class HistorialNotificacionesScreen extends StatefulWidget {
   const HistorialNotificacionesScreen({super.key});
@@ -9,6 +11,16 @@ class HistorialNotificacionesScreen extends StatefulWidget {
 }
 
 class _HistorialNotificacionesScreenState extends State<HistorialNotificacionesScreen> {
+
+  final NotificacionController _con = NotificacionController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
+  }
   // Datos simulados de notificaciones
   final List<Map<String, dynamic>> notificaciones = [
     {
@@ -35,10 +47,10 @@ class _HistorialNotificacionesScreenState extends State<HistorialNotificacionesS
         title: const Text("Historial de Notificaciones"),
       ),
       body: ListView.builder(
-        itemCount: notificaciones.length,
+        itemCount: _con.notificacion.length,
         itemBuilder: (context, index) {
-          final notificacion = notificaciones[index];
-          final formattedDate = DateFormatter.simpleDateFormat(notificacion['fecha'].toIso8601String() ?? "");
+          final notificacion = _con.notificacion[index];
+          //final formattedDate = DateFormatter.simpleDateFormat(notificacion.fecha.toString() ?? "");
 
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Margen para espacio entre elementos
@@ -57,16 +69,21 @@ class _HistorialNotificacionesScreenState extends State<HistorialNotificacionesS
             ),
             child: ListTile(
               title: Text(
-                notificacion['title'],
+                notificacion.title.toString().toUpperCase(),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(notificacion['body']), // Muestra el cuerpo
-              trailing: Text(formattedDate), // Muestra la fecha
+              subtitle: Text(notificacion.body.toString()), // Muestra el cuerpo
+              trailing: Text(notificacion.fecha.toString()), // Muestra la fecha
             ),
           );
         },
       ),
     );
+  }
+
+  refresh() {
+
+    setState(() {});
   }
 }
 
