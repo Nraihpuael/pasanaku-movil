@@ -54,14 +54,14 @@ class _SubirQrScreenState extends State<SubirQrScreen> {
     final response = await http.Response.fromStream(await request.send());
     print(response.body);
 
-    // Manejar la respuesta del servidor
-    /*if (response.statusCode == 200) {
+    print("Respuesta de bode subir: =>> ${response.statusCode}");
+    if (response.statusCode == 201) {
       print('Imagen enviada exitosamente al API');
       // Aquí puedes manejar cualquier lógica adicional después de enviar la imagen
     } else {
       print('Error al enviar la imagen al API: ${response.reasonPhrase}');
       // Aquí puedes manejar cualquier error que ocurra durante la solicitud
-    }*/
+    }
   }
 
   @override
