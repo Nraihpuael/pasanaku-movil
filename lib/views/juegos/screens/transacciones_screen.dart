@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:intl/intl.dart';
 import 'package:pasanaku/models/transaccion.dart';
 import 'package:pasanaku/views/juegos/controllers/transaccion_controller.dart';
 import 'package:pasanaku/views/juegos/screens/image_scanner_screen.dart';
@@ -91,7 +92,8 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                     ),
                   ),
                   Text(
-                    "Fecha límite: ${transaccion.fecha}", // Fecha límite
+                    "Fecha límite: ${DateFormatter.simpleDateFormat(transaccion.fecha.toString() ?? "")}", // Fecha límite
+                    
                     style: const TextStyle(color: Colors.grey), // Texto en gris
                   ),
                   const Icon(Icons.arrow_forward,
@@ -177,7 +179,8 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
             ),
             ListTile(
               title: const Text("Fecha limite a cancelar"),
-              subtitle: Text(widget.transaccion!.fecha.toString()),
+              subtitle: Text(DateFormatter.simpleDateFormat(widget.transaccion!.fecha.toString() ?? "")),
+                            // trailing: Text(DateFormatter.simpleDateFormat(widget.transaccion!.fecha.toString() ?? "")),
             ),
             ListTile(
               title: const Text("Monto a Pagar"),
@@ -245,5 +248,22 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
         )),
       ),
     );
+  }
+}
+
+
+class DateFormatter {
+  static String simpleDateFormat(String iso8601Date) {
+    DateTime dateTime = DateTime.parse(iso8601Date);
+    const List<String> monthNames = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+
+    int day = dateTime.day;
+    int month = dateTime.month;
+    int year = dateTime.year;
+
+    return '$day de ${monthNames[month - 1]} de $year';
   }
 }
