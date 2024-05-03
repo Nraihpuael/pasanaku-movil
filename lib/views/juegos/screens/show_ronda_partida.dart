@@ -96,7 +96,7 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
             subtitle: Text("aún no hay ganador"),
           ),
 
-        if (subasta?.estado != 'Iniciada') // Verificar estado
+        if (subasta?.estado == 'Iniciada') // Verificar estado
           SizedBox(
             width: double.infinity,
             height: 60,
