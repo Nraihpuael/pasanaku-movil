@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart'; // Para seleccionar imágenes
 import 'dart:io'; // Para trabajar con archivos
 
 class ImageScannerScreen extends StatefulWidget {
   final String? idRonda;
-  const ImageScannerScreen(
-      {this.idRonda, Key? key})
-      : super(key: key);
+  const ImageScannerScreen({this.idRonda, Key? key}) : super(key: key);
 
   @override
   State<ImageScannerScreen> createState() => _ImageScannerScreenState();
@@ -31,20 +30,39 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
   // Método para escanear la imagen y disparar una acción
   Future<void> _scanImage(File image) async {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Escaneando imagen...")), // Mensaje de escaneo
+      const SnackBar(
+          content: Text("Escaneando imagen...")), // Mensaje de escaneo
     );
     print("Imprimiendoo el idRonda desde paga>== ${widget.idRonda}");
-    //Uri url = Uri.https(_url, '$_api/rechazar/$idInvitacion');
+    
     try {
-      Uri url = Uri.https("pasanaku-api.adaptable.app", '/api/transferencia/pagar/${widget.idRonda}');
+      Uri url = Uri.https("pasanaku-api.adaptable.app",
+          '/api/transferencia/pagar/${widget.idRonda}');
       final res = await http.put(url);
       print("imprimeiendo el res: $res");
-      //final data = json.decode(res.body);
-      //print("imprimiendo la data: $data");
-      //return data;   
+      
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Transaccion pagada")), // Mensaje de escaneo
-      );   
+        const SnackBar (
+          content: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Transaccion completada con éxito',
+                  style: TextStyle(color: Colors.white)),
+            ],
+          ),
+          duration: Duration(seconds: 3), // Duración de la notificación
+          backgroundColor: Colors.green, 
+          
+        ),
+      );
+      context.pop();
+      /*
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Transaccion pagada")), // Mensaje de escaneo
+      );
+      context.pop();*/
     } catch (e) {
       print("errorrr: $e");
     }
@@ -58,9 +76,11 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
       appBar: AppBar(
         title: const Text("Escáner de Imágenes"),
       ),
-      body: Center( // Centrar el contenido
+      body: Center(
+        // Centrar el contenido
         child: Padding(
-          padding: const EdgeInsets.all(16), // Espacio para evitar bordes pegados
+          padding:
+              const EdgeInsets.all(16), // Espacio para evitar bordes pegados
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,12 +97,11 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
                   child: Image.asset(
                     'assets/qr_scanner.jpg', // Imagen estática
                     height: 280,
-                  
                   ),
                 ),
               ),
 
-             const SizedBox(height: 20), // Espacio entre elementos
+              const SizedBox(height: 20), // Espacio entre elementos
 
               // Botón personalizado con altura fija
               Padding(
@@ -93,7 +112,8 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
                     height: 45, // Altura del botón
                     decoration: BoxDecoration(
                       color: const Color(0xFFFDE047), // Color del botón
-                      borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                      borderRadius:
+                          BorderRadius.circular(12), // Bordes redondeados
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
@@ -103,11 +123,13 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
                         ),
                       ],
                     ),
-                    child: const Center( // Centrar el contenido
+                    child: const Center(
+                      // Centrar el contenido
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.cloud_upload, color: Colors.black), // Icono y color
+                          Icon(Icons.cloud_upload,
+                              color: Colors.black), // Icono y color
                           SizedBox(width: 10), // Espacio entre icono y texto
                           Text(
                             "Subir Imagen",
