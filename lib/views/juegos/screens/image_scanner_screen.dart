@@ -55,8 +55,15 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
           backgroundColor: Colors.green, 
           
         ),
+        
       );
-      context.pop();
+      Future.delayed(Duration(seconds: 2), () {
+        context.push('/home');
+        //context.go('/home');
+      });
+      //context.push('/home');
+      //context.go('/home');      
+      
       /*
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -107,7 +114,12 @@ class _ImageScannerScreenState extends State<ImageScannerScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30), // Margen
                 child: GestureDetector(
-                  onTap: _pickAndScanImage, // Seleccionar y escanear
+                  onTap: (){
+                    _pickAndScanImage(); // Seleccionar y escanear
+                    
+                    
+                  },
+                  
                   child: Container(
                     height: 45, // Altura del botón
                     decoration: BoxDecoration(
