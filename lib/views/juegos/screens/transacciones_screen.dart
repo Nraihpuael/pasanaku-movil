@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:pasanaku/models/transaccion.dart';
@@ -88,13 +89,13 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                         Text(transaccion.estado
                             .toString()), // Estado de la transacción
                         Text("Monto: ${transaccion.monto} Bs."), // Monto
+                        Text(
+                          "Fecha límite: ${DateFormatter.simpleDateFormat(transaccion.fecha.toString() ?? "")}", // Fecha límite
+                          
+                          style: const TextStyle(color: Colors.grey), // Texto en gris
+                        ),
                       ],
                     ),
-                  ),
-                  Text(
-                    "Fecha límite: ${DateFormatter.simpleDateFormat(transaccion.fecha.toString() ?? "")}", // Fecha límite
-                    
-                    style: const TextStyle(color: Colors.grey), // Texto en gris
                   ),
                   const Icon(Icons.arrow_forward,
                       color: Colors.grey), // Icono para interacción
@@ -162,6 +163,9 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.transaccion!.toJson());
+    bool isDebe = widget.transaccion!.estado?.toLowerCase() == 'debe';
+    bool hasQR = widget.transaccion!.receptor!.imagen != null && widget.transaccion!.receptor!.imagen! != "";
     return Scaffold(
       appBar: AppBar(
         title: const Text("Detalles de la Transacción"),
@@ -190,60 +194,66 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
               title: const Text("Ganador: "),
               subtitle: Text(widget.transaccion!.receptor!.nombre.toString()),
             ),
-            if (widget.transaccion!.receptor!.imagen != null)
-              Column(
-                children: [
-                  RepaintBoundary(
-                    key: _globalKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(
-                          widget.transaccion!.receptor!.imagen.toString(),
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
+           if (isDebe && hasQR) // Muestra botones si estado es "debe" y hay QR
+                Column(
+                  children: [
+                    RepaintBoundary(
+                      key: _globalKey,
+                      child: Image.network(
+                        width: 300,
+                        height: 300,
+                        widget.transaccion!.receptor!.imagen.toString(),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Column(
+                              children: [
+                                const Text("Cargando imagen..."),
+                                CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
                                     ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
+                                      loadingProgress.expectedTotalBytes!
                                     : null,
-                              );
-                            }
-                          },
-                          errorBuilder: (BuildContext context, Object error,
-                              StackTrace? stackTrace) {
-                            return const Text('Error loading image');
-                          },
-                        ),
-                      ],
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Text(
+                            'El usuario ganador debe subir un QR',
+                            style: TextStyle(color: Colors.grey),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                   const SizedBox(height: 20),
-                  ElevatedButton(
-                  onPressed: _saveImage,
-                  child: const Text('Guardar Imagen'),
-            ),
-                ],
-                
-              ),
-           
-            CustomFilledButton(
-              text: "Pagar Transaccion",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ImageScannerScreen(
-                        idRonda: widget.idTransaccion
-                        // Pasar el ID
-                        ),
-                  ),
-                );
-              },
-            )
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _saveImage,
+                      child: const Text('Guardar Imagen'),
+                    ),
+                    CustomFilledButton(
+                      buttonColor: const Color(0xFFFDE047),
+                      text: "Pagar Transacción",
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImageScannerScreen(
+                              idRonda: widget.idTransaccion,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                )
+              else
+                const Text(
+                  'El usuario ganador debe subir un QR',
+                  style: TextStyle(color: Colors.grey),
+                ),
           ],
         )),
       ),
@@ -253,17 +263,22 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
 
 
 class DateFormatter {
-  static String simpleDateFormat(String iso8601Date) {
-    DateTime dateTime = DateTime.parse(iso8601Date);
-    const List<String> monthNames = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
+  static String simpleDateFormat(String dateString) {
+    try {
+      // Analiza la fecha y hora a partir del formato dado
+      DateTime dateTime = DateTime.parse(dateString);
 
-    int day = dateTime.day;
-    int month = dateTime.month;
-    int year = dateTime.year;
+      // Ajusta la diferencia horaria para Bolivia (UTC-4)
+      DateTime adjustedDateTime = dateTime.subtract(const Duration(hours: 4));
 
-    return '$day de ${monthNames[month - 1]} de $year';
+      // Crea el formateador asegurándote de usar comillas para "de"
+      final DateFormat formatter = DateFormat("d 'de' MMMM 'de' yyyy, h:mm a");
+
+      // Devuelve la fecha formateada con la corrección de 4 horas
+      return formatter.format(adjustedDateTime);
+    } catch (e) {
+      // Devuelve un mensaje de error si algo sale mal
+      return 'Formato de fecha inválido';
+    }
   }
 }
