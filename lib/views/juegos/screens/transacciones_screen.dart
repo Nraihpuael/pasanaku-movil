@@ -165,6 +165,7 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
   Widget build(BuildContext context) {
     print(widget.transaccion!.toJson());
     bool isDebe = widget.transaccion!.estado?.toLowerCase() == 'debe';
+    bool isPagada = widget.transaccion!.estado?.toLowerCase() == 'pagada';
     bool hasQR = widget.transaccion!.receptor!.imagen != null && widget.transaccion!.receptor!.imagen! != "";
     return Scaffold(
       appBar: AppBar(
@@ -249,7 +250,12 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
                     ),
                   ],
                 )
-              else
+              else if (isPagada) // Muestra mensaje si la transacción está pagada
+                const Text(
+                  'Transacción realizada con éxito',
+                  style: TextStyle(color: Colors.green),
+                )
+              else // Si no es "debe" ni "pagada", muestra el mensaje de QR no disponible
                 const Text(
                   'El usuario ganador debe subir un QR',
                   style: TextStyle(color: Colors.grey),
