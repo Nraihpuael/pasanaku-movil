@@ -85,16 +85,21 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
             subasta?.estado?.toString() ?? "No disponible", // Manejo seguro
           ),
         ),
-        if (subasta?.ganador != null) // Verificar nulidad
-          ListTile(
-            title: const Text("Ganador"),
-            subtitle: Text(subasta?.ganador ?? "No disponible"), // Manejo seguro
-          )
-        else
+        if (subasta?.ganador == null) // Verificar nulidad
           const ListTile(
             title: Text("Ganador"),
             subtitle: Text("aún no hay ganador"),
+          )
+        else
+          ListTile(
+            title: const Text("Ganador"),
+            subtitle: Text(subasta?.ganador ?? "No disponible"), // Manejo seguro
           ),
+          ListTile(
+            title: const Text("Monto de puja del Ganador"),
+            subtitle: Text(subasta?.resultado.toString() ?? "No disponible"), // Manejo seguro
+          ),
+          
 
         if (subasta?.estado == 'Iniciada') // Verificar estado
           SizedBox(
