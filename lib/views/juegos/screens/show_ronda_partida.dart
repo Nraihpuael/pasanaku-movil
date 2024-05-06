@@ -5,6 +5,7 @@ import '../../../models/user.dart';
 import '../controllers/rondas_controller.dart';
 import 'package:pasanaku/views/juegos/screens/show_apuesta_screen.dart';
 import 'package:pasanaku/views/shared/widgets/custom_filled_button.dart';
+import 'package:intl/intl.dart';
 
 class ShowRondaPartida extends StatefulWidget {
   final Partida? partida;
@@ -76,8 +77,9 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
         ListTile(
           title: const Text("Fecha de inicio"),
           subtitle: Text(
-            subasta?.fechaInicio?.toString() ?? "Cargando...", // Manejo seguro
+            DateFormatter.simpleDateFormat(subasta?.fechaInicio?.toIso8601String() ?? 'Cargando...'), // Manejo seguro
           ),
+          // DateFormatter.simpleDateFormat(subasta?.fechaInicio?.toIso8601String() ?? 'Cargando...')
         ),
         ListTile(
           title: const Text("Estado"),
@@ -128,5 +130,27 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
 
   void refresh() {
     setState(() {}); // Actualizar la UI
+  }
+}
+
+
+class DateFormatter {
+  static String simpleDateFormat(String dateString) {
+    try {
+      // Analiza la fecha y hora a partir del formato dado
+      DateTime dateTime = DateTime.parse(dateString);
+
+      // Ajusta la diferencia horaria para Bolivia (UTC-4)
+      DateTime adjustedDateTime = dateTime.subtract(const Duration(hours: 4));
+
+      // Crea el formateador asegurándote de usar comillas para "de"
+      final DateFormat formatter = DateFormat("d 'de' MMMM 'de' yyyy, h:mm a");
+
+      // Devuelve la fecha formateada con la corrección de 4 horas
+      return formatter.format(adjustedDateTime);
+    } catch (e) {
+      // Devuelve un mensaje de error si algo sale mal
+      return 'Formato de fecha inválido';
+    }
   }
 }

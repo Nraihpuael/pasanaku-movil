@@ -5,6 +5,7 @@ import 'package:pasanaku/models/partida.dart';
 import 'package:pasanaku/views/juegos/controllers/rondas_controller.dart';
 import 'package:pasanaku/views/juegos/screens/show_apuesta_screen.dart';
 import 'package:pasanaku/views/juegos/screens/show_ronda_partida.dart';
+import 'package:intl/intl.dart';
 
 class ShowRondaScreen extends StatefulWidget {
   final Partida? partida;
@@ -112,55 +113,25 @@ class _ShowRondaScreenState extends State<ShowRondaScreen> {
 }
 
 class DateFormatter {
-  static String simpleDateFormat(String iso8601Date) {
-    DateTime dateTime = DateTime.parse(iso8601Date);
-    const List<String> monthNames = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
+  static String simpleDateFormat(String dateString) {
+    try {
+      // Analiza la fecha y hora a partir del formato dado
+      DateTime dateTime = DateTime.parse(dateString);
 
-    int day = dateTime.day;
-    int month = dateTime.month;
-    int year = dateTime.year;
+      // Ajusta la diferencia horaria para Bolivia (UTC-4)
+      DateTime adjustedDateTime = dateTime.subtract(const Duration(hours: 4));
 
-    return '$day de ${monthNames[month - 1]} de $year';
+      // Crea el formateador asegurándote de usar comillas para "de"
+      final DateFormat formatter = DateFormat("d 'de' MMMM 'de' yyyy, h:mm a");
+
+      // Devuelve la fecha formateada con la corrección de 4 horas
+      return formatter.format(adjustedDateTime);
+    } catch (e) {
+      // Devuelve un mensaje de error si algo sale mal
+      return 'Formato de fecha inválido';
+    }
   }
 }
-//             return GestureDetector(
-//               onTap: () {
-//                 Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                         builder: (context) => ShowRondaPartida(
-//                             partida: widget.partida,
-//                             rondaPartida:
-//                                 widget.partida!.rondasEnpartida![index],
-//                             user: widget.user)));
-//               },
-//               child: ListTile(
-//                 title: Text(
-//                     widget.partida!.rondasEnpartida![index].nombre.toString()),
-//                 subtitle: Column(
-//                   mainAxisAlignment: MainAxisAlignment.start,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(widget.partida!.rondasEnpartida![index].estado),
-//                     Text(widget.partida!.rondasEnpartida![index].fechaInicio
-//                         .toIso8601String()),
-//                     //Text(_con.subasta!.ganador)
-//                   ],
-//                 ),
-//               ),
-//             );
-//           }),
-//     );
-//   }
-
-//   void refresh() {
-//     setState(() {});
-//   }
-// }
-
 
 
 
