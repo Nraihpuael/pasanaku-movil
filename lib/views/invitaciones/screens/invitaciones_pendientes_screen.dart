@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:pasanaku/providers/invitacion_provider.dart';
 import 'package:pasanaku/views/invitaciones/controllers/invitaciones_pendientes_controller.dart';
 
@@ -54,7 +55,8 @@ class _InvitacionesPendientesScreenState
                       Text(
                           "Monto: ${_con.invitaciones![index].partidaPozo.toString()}"),
                       Text(
-                          "Fecha Incio: ${_con.invitaciones![index].partidaFecha.toString()}")
+                          "Fecha Incio: ${DateFormatter.simpleDateFormat(_con.invitaciones![index].partidaFecha.toString() ?? "")}")
+                          
                     ],
                   ),
                   trailing: Row(
@@ -119,28 +121,48 @@ class _InvitacionesPendientesScreenState
               Text('pago por ronda: 100 Bs.'),
               Text('Numero de Rondas: 10'),
               Text(
-                  'Fecha de inicio: ${DateTime.parse(_con.invitaciones![index].partidaFecha.toString())}'),
+                  'Fecha de inicio: ${DateFormatter.simpleDateFormat(_con.invitaciones![index].partidaFecha.toString() ?? "")}'),
+                  
             ],
           ),
-          actions: [
-            FloatingActionButton(
-              child: Text('Aceptar'),
+           actions: [
+          // Botón pequeño para "Aceptar"
+          SizedBox(
+            width: 70, // Ancho más pequeño
+            height: 40, // Altura más pequeña
+            child: FloatingActionButton(
+              mini: true, // Hace que el botón sea más pequeño
+              child: Text(
+                'Aceptar',
+                style: TextStyle(fontSize: 14, color: Color(0xff4339B0)), // Tamaño del texto
+              ),
               onPressed: () {
                 _con.aceptarInvitacion(_con.invitaciones![index].id);
                 Navigator.of(context).pop();
                 context.go('/home');
               },
             ),
-            FloatingActionButton(
-              child: Text('Rechazar'),
+          ),
+          SizedBox(width: 10), // Espacio entre botones
+
+          // Botón pequeño para "Rechazar"
+          SizedBox(
+            width: 70, // Ancho más pequeño
+            height: 40, // Altura más pequeña
+            child: FloatingActionButton(
+              mini: true, // Hace que el botón sea más pequeño
+              child: Text(
+                'Rechazar',
+                style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 163, 9, 0)), // Tamaño del texto
+              ),
               onPressed: () {
-                // Aquí iría la lógica para rechazar la invitación
                 _con.rechazarInvitacion(_con.invitaciones![index].id);
                 Navigator.of(context).pop();
                 context.go('/home');
               },
             ),
-          ],
+          ),
+        ],
         );
       },
     );
@@ -148,5 +170,27 @@ class _InvitacionesPendientesScreenState
 
   void refresh() {
     setState(() {});
+  }
+}
+
+
+class DateFormatter {
+  static String simpleDateFormat(String dateString) {
+    try {
+      // Analiza la fecha y hora a partir del formato dado
+      DateTime dateTime = DateTime.parse(dateString);
+
+      // Ajusta la diferencia horaria para Bolivia (UTC-4)
+      // DateTime adjustedDateTime = dateTime.subtract(const Duration(hours: 4));
+
+      // Crea el formateador asegurándote de usar comillas para "de"
+      final DateFormat formatter = DateFormat("d 'de' MMMM 'de' yyyy, h:mm a");
+
+      // Devuelve la fecha formateada con la corrección de 4 horas
+      return formatter.format(dateTime);
+    } catch (e) {
+      // Devuelve un mensaje de error si algo sale mal
+      return 'Formato de fecha inválido';
+    }
   }
 }
