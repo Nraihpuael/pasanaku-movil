@@ -23,7 +23,6 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
   final TransaccionController _con = TransaccionController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
@@ -41,6 +40,10 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
         itemBuilder: (context, index) {
           final transaccion =
               _con.transaccion[index]; // Obtener el elemento actual
+                 // Determinar el color de fondo según el estado
+          final bgColor = transaccion.estado?.toLowerCase() == 'pagada' 
+              ? ui.Color.fromARGB(255, 224, 224, 224) // Fondo más opaco para transacciones pagadas
+              : Colors.white; // Fondo por defecto para otros estados
           return GestureDetector(
             onTap: () {
               // Navegar a la pantalla de detalles usando idGanador
@@ -59,7 +62,7 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
                   vertical: 8, horizontal: 12), // Margen
               padding: const EdgeInsets.all(16), // Espacio interno
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: bgColor,
                 borderRadius: BorderRadius.circular(12), // Bordes redondeados
                 boxShadow: [
                   BoxShadow(
