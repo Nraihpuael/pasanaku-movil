@@ -84,6 +84,7 @@ class _InvitacionesPendientesScreenState
                 );
               },
             ),
+      /*
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 2,
         items: const <BottomNavigationBarItem>[
@@ -100,7 +101,7 @@ class _InvitacionesPendientesScreenState
             label: 'Invitaciones',
           ),
         ],
-      ),
+      ),*/
     );
   }
 
