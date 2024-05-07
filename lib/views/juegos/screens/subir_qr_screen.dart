@@ -34,7 +34,7 @@ class _SubirQrScreenState extends State<SubirQrScreen> {
   Future<void> _uploadImage(String imagePath) async {
     // URL del endpoint de tu API
     final url = Uri.parse(
-        'https://pasanaku-api.adaptable.app/api/jugadores/subirImagens/${widget.user!.id}');
+        'https://pasanaku-api.adaptable.app/api/jugadores/subirImagen/${widget.user!.id}');
 
     // Crear una solicitud de tipo POST
     final request = http.MultipartRequest('POST', url);
@@ -99,11 +99,11 @@ class _SubirQrScreenState extends State<SubirQrScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Picker Demo'),
+        title: Text('Subir QR'),
       ),
       body: Center(
         child: _image == null
-            ? Text('No image selected.')
+            ? Text('No Seleccionaste una imagen.')
             : Image.file(
                 File(_image!.path),
                 width: 200,
@@ -112,7 +112,7 @@ class _SubirQrScreenState extends State<SubirQrScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _getImage,
-        tooltip: 'Pick Image',
+        tooltip: 'Selecciona una imagen',
         child: Icon(Icons.add_a_photo),
       ),
     );

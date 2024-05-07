@@ -75,9 +75,16 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
           subtitle: Text(widget.rondaPartida?.nombre ?? "No disponible"), // Manejo seguro
         ),
         ListTile(
-          title: const Text("Fecha de inicio"),
+          title: const Text("Fecha de inicio subasta"),
           subtitle: Text(
             DateFormatter.simpleDateFormat(subasta?.fechaInicio?.toIso8601String() ?? 'Cargando...'), // Manejo seguro
+          ),
+          // DateFormatter.simpleDateFormat(subasta?.fechaInicio?.toIso8601String() ?? 'Cargando...')
+        ),
+        ListTile(
+          title: const Text("Fecha de finalizacion subasta"),
+          subtitle: Text(
+            DateFormatter.simpleDateFormat(subasta?.fechaFinal?.toIso8601String() ?? 'Cargando...'), // Manejo seguro
           ),
           // DateFormatter.simpleDateFormat(subasta?.fechaInicio?.toIso8601String() ?? 'Cargando...')
         ),
@@ -90,13 +97,19 @@ class _ShowRondaPartidaState extends State<ShowRondaPartida> {
         if (subasta?.ganador == null) // Verificar nulidad
           const ListTile(
             title: Text("Ganador"),
-            subtitle: Text("aún no hay ganador"),
+            subtitle: Text("Aún no hay ganador"),
           )
         else
           ListTile(
             title: const Text("Ganador"),
             subtitle: Text(subasta?.ganador ?? "No disponible"), // Manejo seguro
           ),
+        if (subasta?.resultado == null)
+          const ListTile(
+            title: Text("Monto de puja del Ganador"),
+            subtitle: Text("Aun no hay ganador"), // Manejo seguro
+          )
+        else 
           ListTile(
             title: const Text("Monto de puja del Ganador"),
             subtitle: Text(subasta?.resultado.toString() ?? "No disponible"), // Manejo seguro
