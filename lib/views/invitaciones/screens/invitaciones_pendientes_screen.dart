@@ -15,15 +15,34 @@ class InvitacionesPendientesScreen extends StatefulWidget {
 
 class _InvitacionesPendientesScreenState
     extends State<InvitacionesPendientesScreen> {
-  InvitacionesPendientesController _con = InvitacionesPendientesController();
+  final InvitacionesPendientesController _con = InvitacionesPendientesController();
+  late bool _isLoading;
+  String _errorMessage = '';
 
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      _con.init(context, refresh);
+    _isLoading = true;
+    _errorMessage = '';
+    _loadNotificaciones();
+  }
+
+  void _loadNotificaciones() async {
+    try {
+      await _con.init(context, _refresh);
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Error al cargar las notificaciones';
+      });
+    }
+  }
+
+  void _refresh() {
+    setState(() {
+      _isLoading = false;
+      _errorMessage = '';
     });
   }
 
@@ -34,14 +53,34 @@ class _InvitacionesPendientesScreenState
       appBar: AppBar(
         title: Text('Invitaciones Pendientes'),
       ),
-      body: (_con.invitaciones ?? []).isEmpty
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _errorMessage.isNotEmpty
+              ? Center(child: Text(_errorMessage))
+              : _buildInvitacionesList(),
+
+      /*body: (_con.invitaciones ?? []).isEmpty
           ? const Center(
               child: Text(
                 'No tiene invitaciones',
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
               ),
             )
-          : ListView.builder(
+          : _buildInvitacionesList(),*/
+    );
+  }
+
+  Widget _buildInvitacionesList() {
+    return RefreshIndicator(
+      onRefresh: _handleRefresh,
+      child: (_con.invitaciones ?? []).isEmpty
+          ? const Center(
+              child: Text(
+                'No tiene invitaciones',
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 20),
+              ),
+            )
+          :ListView.builder(
               itemCount: _con.invitaciones!.length,
               itemBuilder: (context, index) {
                 return ListTile(
@@ -84,27 +123,13 @@ class _InvitacionesPendientesScreenState
                 );
               },
             ),
-      /*
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Buscar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_active),
-            label: 'Invitaciones',
-          ),
-        ],
-      ),*/
     );
   }
-
+  
+  Future<void> _handleRefresh() async {
+    // Realiza la lógica de actualización de los datos aquí
+    _loadNotificaciones();
+  }
   Future<dynamic> ShowDialog(BuildContext context, int index) {
     return showDialog(
       context: context,

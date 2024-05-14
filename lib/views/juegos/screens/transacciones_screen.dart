@@ -21,11 +21,34 @@ class TransaccionesScreen extends StatefulWidget {
 
 class _TransaccionesScreenState extends State<TransaccionesScreen> {
   final TransaccionController _con = TransaccionController();
+  late bool _isLoading;
+  String _errorMessage = '';
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    _isLoading = true;
+    _errorMessage = '';
+    _loadNotificaciones();
+    /*SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
+    });*/
+  }
+
+  void _loadNotificaciones() async {
+    try {
+      await _con.init(context, _refresh);
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Error al cargar las transacciones';
+      });
+    }
+  }
+
+  void _refresh() {
+    setState(() {
+      _isLoading = false;
+      _errorMessage = '';
     });
   }
 
@@ -35,7 +58,18 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
       appBar: AppBar(
         title: const Text("Transacciones"),
       ),
-      body: ListView.builder(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _errorMessage.isNotEmpty
+              ? Center(child: Text(_errorMessage))
+              :_buildTransaccionesList(),
+    );
+  }
+
+  Widget _buildTransaccionesList() {
+    return RefreshIndicator(
+      onRefresh: _handleRefresh,
+      child: ListView.builder(
         itemCount: _con.transaccion.length,
         itemBuilder: (context, index) {
           final transaccion =
@@ -110,6 +144,11 @@ class _TransaccionesScreenState extends State<TransaccionesScreen> {
       ),
     );
   }
+  Future<void> _handleRefresh() async {
+    // Realiza la lógica de actualización de los datos aquí
+    _loadNotificaciones();
+  }
+
 
   refresh() {
     setState(() {});
@@ -150,7 +189,7 @@ class _DetallesTransaccionScreenState extends State<DetallesTransaccionScreen> {
       final result = await ImageGallerySaver.saveImage(pngBytes);
       print('Image saved to gallery: $result');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Imagen guardada en galeria'),
         ),
       );
